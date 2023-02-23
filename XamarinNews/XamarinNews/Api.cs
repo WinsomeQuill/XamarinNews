@@ -2,13 +2,12 @@
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System;
-using XamarinNews.MongoDB.Models;
+using XamarinNews.PostgresSQL.Models;
 using System.Text;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Threading;
 using RestSharp;
-using static Android.Provider.ContactsContract;
 
 namespace XamarinNews
 {
@@ -119,6 +118,47 @@ namespace XamarinNews
 
             RestRequest request = new RestRequest("/remove-following-user", Method.Post);
             request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            JObject value = JObject.Parse(response.Content);
+            return value;
+        }
+
+        public async static Task<JObject> InsertArticle(int author_id, int follower_id)
+        {
+            object json = new
+            {
+                author_id,
+                follower_id,
+            };
+
+            RestRequest request = new RestRequest("/insert-article", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            JObject value = JObject.Parse(response.Content);
+            return value;
+        }
+
+        public async static Task<JObject> RemoveArticle(int article_id, int user_id)
+        {
+            object json = new
+            {
+                article_id,
+                user_id,
+            };
+
+            RestRequest request = new RestRequest("/remove-article", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            JObject value = JObject.Parse(response.Content);
+            return value;
+        }
+
+        public async static Task<JObject> GetArticles()
+        {
+            RestRequest request = new RestRequest("/get-articles", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
             JObject value = JObject.Parse(response.Content);

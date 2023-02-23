@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using XamarinNews.MongoDB.Models;
+using XamarinNews.PostgresSQL.Models;
 
 namespace XamarinNews.Windows
 {

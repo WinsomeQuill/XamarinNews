@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace XamarinNews.MongoDB.Models
+namespace XamarinNews.PostgresSQL.Models
 {
     public class Card
     {

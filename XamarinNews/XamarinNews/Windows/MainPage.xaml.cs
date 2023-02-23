@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using XamarinNews.MongoDB.Models;
+using XamarinNews.PostgresSQL.Models;
 
 namespace XamarinNews.Windows
 {
