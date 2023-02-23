@@ -1,5 +1,6 @@
 ﻿using Android.App.Slices;
 using Android.Widget;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Stormlion.ImageCropper;
 using System;
@@ -17,8 +18,7 @@ namespace XamarinNews.Windows
 {
     public partial class MainPage : TabbedPage
     {
-        private List<Card> _List { get; set; } = new List<Card>();
-        private List<Card> _ListProfiles { get; set; } = new List<Card>();
+        private List<Article> _ListProfiles { get; set; } = new List<Article>();
         public MainPage()
         {
             InitializeComponent();
@@ -27,60 +27,36 @@ namespace XamarinNews.Windows
 
         private async void Init()
         {
+            // Это костыль, чтобы пользователь не смог вернуться назад по кнопке
+            // Просто у xamarin тупая система навигации
+            // Кто знает, как это делается правильно - welcome to pull request
             NavigationPage.SetHasNavigationBar(this, false);
-            JObject result = await Api.GetAvatar(Cache.Login);
-            byte[] crop_avatar = Convert.FromBase64String(result["message"]["crop_avatar"].ToString());
-            byte[] full_avatar = Convert.FromBase64String(result["message"]["full_avatar"].ToString());
 
-            if (crop_avatar.Length > 0)
-            {
-                MainPageSearchImageAvatarUser.Source = ImageSource.FromStream(() =>
-                {
-                    return new MemoryStream(crop_avatar);
-                });
-            }
-
-            if (full_avatar.Length > 0)
-            {
-                ImageAvatarUser.Source = Cache.FullAvatar = ImageSource.FromStream(() =>
-                {
-                    return new MemoryStream(full_avatar);
-                });
-            }
+            MainPageSearchImageAvatarUser.Source = Cache.CropAvatar;
+            ImageAvatarUser.Source = Cache.FullAvatar;
 
             for (int i = 0; i < 10; i++)
             {
                 ImageSource image = ImageSource.FromResource("testcardimage.png");
 
-                _ListProfiles.Add(new Card
+                _ListProfiles.Add(new Article
                 {
-                    Date = "12.12.2012",
+                    PublishDate = DateTime.Now,
                     Description = "Description",
                     Image = image,
-                    Author = "Автор: РИО Новости",
-                    AuthorID = 2,
-                    Likes = "1000",
-                    Dislikes = "1000",
+                    Author = null,
+                    Id = i+1000,
+                    Title = "Test",
+                    Likes = 1000,
+                    Dislikes = 1000
                 });
             }
 
-            for (int i = 0; i < 10; i++)
-            {
-                ImageSource image = ImageSource.FromResource("testcardimage.png");
+            JObject result = await Api.GetArticles();
+            List<Article> articles = JsonConvert.DeserializeObject<List<Article>>(result["message"].ToString());
 
-                _List.Add(new Card {
-                    Date = "12.12.2012",
-                    Description = "Description",
-                    Image = image,
-                    Author = "Автор: РИО Новости",
-                    AuthorID = 2,
-                    Likes = "1000",
-                    Dislikes = "1000",
-                });
-            }
-
-            ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = _List;
-            ListViewProfiles.ItemsSource = _ListProfiles;
+            ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = articles;
+            ListViewProfileNews.ItemsSource = _ListProfiles;
 
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfiles.ItemSelected += ListViewProfiles_ItemSelected;
@@ -88,8 +64,8 @@ namespace XamarinNews.Windows
 
         private async void ListViewProfiles_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Card item = (Card)e.SelectedItem;
-            await Navigation.PushAsync(new AnotherProfile(item.AuthorID, Cache.ID));
+            Article item = (Article)e.SelectedItem;
+            await Navigation.PushAsync(new AnotherProfile(item.Author.Id, Cache.ID));
         }
 
         private void SearchNews_TextChanged(object sender, TextChangedEventArgs e)
@@ -99,8 +75,8 @@ namespace XamarinNews.Windows
 
         private async void ListViewNews_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Card item = (Card)e.SelectedItem;
-            await Navigation.PushAsync(new FullArticle());
+            Article item = (Article)e.SelectedItem;
+            await Navigation.PushAsync(new FullArticle(item));
         }
 
         private async void ButtonChangePhoto_Clicked(object sender, EventArgs e)

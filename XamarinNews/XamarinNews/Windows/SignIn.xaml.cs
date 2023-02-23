@@ -1,12 +1,15 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XamarinNews.PostgresSQL.Models;
 
 namespace XamarinNews.Windows
 {
@@ -35,11 +38,15 @@ namespace XamarinNews.Windows
                     return;
                 }
 
+                User user = JsonConvert.DeserializeObject<User>(result["message"].ToString());
+
                 Cache.Login = login;
-                Cache.ID = (int)result["message"]["id"];
-                Cache.Description = result["message"]["description"].ToString();
-                Cache.FirstName = result["message"]["first_name"].ToString();
-                Cache.LastName = result["message"]["last_name"].ToString();
+                Cache.ID = user.Id;
+                Cache.About = user.About;
+                Cache.FirstName = user.FirstName;
+                Cache.LastName = user.LastName;
+                Cache.CropAvatar = user.CropAvatar;
+                Cache.FullAvatar = user.FullAvatar;
                 await Navigation.PushAsync(new MainPage());
             }
             catch (Exception ex)

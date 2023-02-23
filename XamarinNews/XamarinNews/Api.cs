@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Threading;
 using RestSharp;
+using System.Collections.Generic;
 
 namespace XamarinNews
 {

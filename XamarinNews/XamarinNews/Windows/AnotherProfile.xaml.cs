@@ -14,7 +14,7 @@ namespace XamarinNews.Windows
 {
     public partial class AnotherProfile : ContentPage
     {
-        private List<Card> _List { get; set; } = new List<Card>();
+        private List<Article> _List { get; set; } = new List<Article>();
         private int _authorID { get; set; }
         private bool _isSubsribe { get; set; } = false;
 
@@ -55,7 +55,7 @@ namespace XamarinNews.Windows
 
             LabelTimestampRegistration.Text = user["message"]["date_registration"].ToString();
             LabelCountFollowers.Text = $"{await Api.GetUserCountFollowers(_authorID)}";
-            LabelDescription.Text = user["message"]["description"].ToString();
+            LabelDescription.Text = user["message"]["about"].ToString();
             LabelNewsProfileText.Text = $"Последние новости от {LabelFirstName.Text} {LabelLastName.Text}";
 
             ButtonSubscribe.Clicked += ButtonSubscribe_Clicked;
@@ -64,14 +64,14 @@ namespace XamarinNews.Windows
             {
                 ImageSource image = ImageSource.FromResource("testcardimage.png");
 
-                _List.Add(new Card
+                _List.Add(new Article
                 {
-                    Date = "12.12.2012",
+                    PublishDate = DateTime.Now,
                     Description = "Description",
                     Image = image,
-                    Author = $"Автор: {LabelFirstName.Text} {LabelLastName.Text}",
-                    Likes = "1000",
-                    Dislikes = "1000",
+                    Author = null,
+                    Likes = 1000,
+                    Dislikes = 1000,
                 });
             }
 
@@ -81,8 +81,8 @@ namespace XamarinNews.Windows
 
         private async void ListViewProfileNews_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Card item = (Card)e.SelectedItem;
-            await Navigation.PushAsync(new FullArticle());
+            Article item = (Article)e.SelectedItem;
+            await Navigation.PushAsync(new FullArticle(item));
         }
 
         private async void ButtonSubscribe_Clicked(object sender, EventArgs e)

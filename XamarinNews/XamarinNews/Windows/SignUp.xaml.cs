@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,11 +37,16 @@ namespace XamarinNews.Windows
 
             if (result["status"].ToString() == "success")
             {
+                result = await Api.LoginUser(login, password);
+                user = JsonConvert.DeserializeObject<User>(result["message"].ToString());
+
                 Cache.Login = login;
-                Cache.ID = (int)result["message"]["id"];
-                Cache.Description = null;
-                Cache.FirstName = firstName;
-                Cache.LastName = lastName;
+                Cache.ID = user.Id;
+                Cache.About = user.About;
+                Cache.FirstName = user.FirstName;
+                Cache.LastName = user.LastName;
+                Cache.CropAvatar = user.CropAvatar;
+                Cache.FullAvatar = user.FullAvatar;
                 await Navigation.PushAsync(new MainPage());
             }
         }
