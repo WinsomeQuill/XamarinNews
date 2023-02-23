@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinNews.Windows.FullArticle">
+    <ContentPage.Content>
+        <ScrollView VerticalScrollBarVisibility="Never"
+                    HorizontalScrollBarVisibility="Always">
+            <StackLayout Orientation="Vertical"
+                         Margin="10,0,10,0"
+                         VerticalOptions="CenterAndExpand"
+                         HorizontalOptions="CenterAndExpand">
+                <Label Text="Название статьи"
+                       FontSize="18"
+                       HorizontalOptions="CenterAndExpand"
+                       Margin="0,10,0,0"/>
+                <Frame CornerRadius="5"
+                       HasShadow="False"
+                       Padding="0"
+                       Margin="0,10,0,0">
+                    <Image Aspect="Fill"
+                           VerticalOptions="Start"
+                           HorizontalOptions="Center"
+                           Source="testcardimage.jpg"
+                           HeightRequest="150"/>
+                </Frame>
+                <Label Margin="0,10,0,0"
+                       HorizontalOptions="CenterAndExpand"
+                       Text="Опять я вас про медведя потчую. Но ведь и зверь интересный, не глупей человека. Вот например, медведи нынче умные пошли на овсяное поле прежде чем выйти, первым делом всю кромку леса осмотрят, не сидят ли где на лабазах охотники и поле само обойти могут, понюхать, следочки посмотреть. А знаете ли вы, чем медведи питаются? Ведь надо им к зиме жира накопить, чтобы спать до весны, значит и кушать всё подряд надо. Но всё-таки думаю удивлю многих, что раньше, медведь летом и осенью не только по ягоды да на овсы ходил, но и в поля за сладкой репой, когда ту сеяли, и сочную морковку копать не брезговал. Очень умный зверь и сильный, а ещё приспособленный к любым условиям и характером упорный, намеченной цели добиться старается. Увидеть лесного, не с Камчатки, медведя непросто, а понаблюдать за ним вдвойне, и память о встрече с ним, на всю жизнь останется.
+А Вы встречались в лесу с медведем?
+
+
+ 
+История 1  Не совсем лесная, но всё же
+
+  Знакомые охотники убили на охоте небольшого медведя и решили сделать из него чучело для музея в Доме культуры.  Сделали они это чучело, как полагается всё нормально, на двух ногах стоит, пасть раскрыта, а передние лапы вперёд вытянул. Так как медведь небольшой был, с рост человека, решили его на автобусе перевезти. Погрузились на заднюю площадку, где сидений нет, едут. Народ вокруг с интересом смотрит. И вот значит доезжают они до нужной остановки, двери открываются, а мужчина который его выносил, был небольшого росточка, меньше медведя, и немного замешкался, но обхватив чучело сзади под мышки, потащил медведя вперёд, а сам сзади и не видно его.
+  Теперь взгляд со стороны, картина маслом. На остановке в ожидании стоят люди, в основном женщины. Подходит автобус, двери открываются и никто не выходит (товарищ то наш замешкался), и все лезут в автобус. Вдруг им навстречу медведь, пасть оскалил, лапы к женщинам тянет. Одна в мохнатое брюхо ему упёрлась и как голову то подняла… .
+Дальше сами представьте, что было.
+
+ 
+
+История 2
+
+Шли как-то отец с сыном по лесной дороге из одной деревни в другую и вдруг видят свежая куча медвежья лежит. Дальше идут опять кучка, тёпленькая, за ней следующая и чуть не парок от неё идёт. Отец тогда сыну говорит: «Если сейчас медведя увидим, ты не пугайся и не беги никуда, а постоим или мимо пройдём». Идут они дальше, и тут вдруг отец назад оглядывается и видит. Стоит у берёзки, на задних лапах, крупный медведь и за людьми наблюдает. Плечом к стволу привалился, лапы на груди скрестил и разглядывает. Тут им (людям) не по себе стало. Но разошлись с миром.
+ Вот ещё вспомнилось. Бывал я раньше в Дарвинском заповеднике и даже в домике жил, где Джеральд Даррелл со своей супругой останавливались. И если приезжал надолго, обязательно в местную библиотеку ходил. Хранились в ней, бесценные годовые летописи, с самого начала заповедника и описывалось в них про всё то, что на заповедной территории происходило. И когда черёмуха зацвела и первая кукушка закуковала, сколько было на пролёте в этом году той или иной птицы. В общем, обо всём, обо всём и про медведей конечно."/>
+
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Start">
+                    <Label Margin="0,10,0,0"
+                       Text="Автор:"/>
+                    <Label Margin="0,10,0,0"
+                       Text="РИО Новости"/>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Frame CornerRadius="100"
+                       HasShadow="False"
+                       Padding="0"
+                       Margin="0,10,0,0">
+                        <Image Aspect="Fill"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center"
+                               Source="testcardimage.jpg"
+                               HeightRequest="40"
+                               WidthRequest="40"/>
+                    </Frame>
+                    <Entry Placeholder="Оставьте свой комментарий!"
+                           HorizontalOptions="CenterAndExpand"
+                           HeightRequest="20"/>
+                </StackLayout>
+
+                <StackLayout>
+                    <ListView x:Name="ListViewFullArticleComments"
+                              HasUnevenRows="True"
+                              VerticalOptions="FillAndExpand">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.View>
+                                        <StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Frame CornerRadius="100"
+                                                   HasShadow="True"
+                                                   Padding="0"
+                                                   VerticalOptions="Start"
+                                                   Margin="0,10,0,0">
+                                                    <Image Aspect="Fill"
+                                                       VerticalOptions="Start"
+                                                       HorizontalOptions="Center"
+                                                       Source="{Binding Image}"
+                                                       HeightRequest="40"
+                                                       WidthRequest="40"/>
+                                                </Frame>
+                                                <Label Text="{Binding FirstName}"
+                                                       Margin="0,20,0,0"/>
+                                                <Label Text="{Binding LastName}"
+                                                       Margin="0,20,0,0"/>
+                                            </StackLayout>
+                                            <Label Text="{Binding Message}"/>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Date}" FontSize="12"/>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </ViewCell.View>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

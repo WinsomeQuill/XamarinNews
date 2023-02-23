@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinNews.Windows.SignIn">
+    <ContentPage.Content>
+        <StackLayout Margin="10,0,10,0">
+            <Label Text="Вход в аккаунт"
+                   FontSize="24"
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center"/>
+            <Entry x:Name="EntrySignInLogin"
+                   Placeholder="Логин"
+                   MaxLength="32"
+                   WidthRequest="100"
+                   Text="admin"
+                   HorizontalOptions="FillAndExpand"/>
+            <Entry x:Name="EntrySignInPassword"
+                   Placeholder="Пароль"
+                   MaxLength="32"
+                   WidthRequest="100"
+                   Text="admin"
+                   HorizontalOptions="FillAndExpand"
+                   IsPassword="True"/>
+            <Label x:Name="LabelError"
+                   HorizontalOptions="FillAndExpand"/>
+            <Button x:Name="ButtonSignUpConfirm"
+                    Text="Войти"
+                    HorizontalOptions="FillAndExpand"
+                    Clicked="ButtonSignInConfirm_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

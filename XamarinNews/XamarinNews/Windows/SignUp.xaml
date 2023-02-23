@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinNews.Windows.SignUp">
+    <ContentPage.Content>
+        <StackLayout Margin="10,0,10,0">
+            <Label Text="Регистрация аккаунта"
+                   FontSize="24"
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center"/>
+            <Entry x:Name="EntrySignUpFirstName"
+                   Placeholder="Имя"
+                   MaxLength="64"
+                   HorizontalOptions="FillAndExpand"/>
+            <Entry x:Name="EntrySignUpLastName"
+                   Placeholder="Фамилия"
+                   MaxLength="64"
+                   WidthRequest="100"
+                   HorizontalOptions="FillAndExpand"/>
+            <Entry x:Name="EntrySignUpLogin"
+                   Placeholder="Логин"
+                   MaxLength="32"
+                   WidthRequest="100"
+                   HorizontalOptions="FillAndExpand"/>
+            <Entry x:Name="EntrySignUpPassword"
+                   Placeholder="Пароль"
+                   MaxLength="32"
+                   WidthRequest="100"
+                   HorizontalOptions="FillAndExpand"
+                   IsPassword="True"/>
+            <Label x:Name="LabelError"
+                   HorizontalOptions="FillAndExpand"/>
+            <Button x:Name="ButtonSignUpConfirm"
+                    Text="Зарегистрироваться"
+                    HorizontalOptions="FillAndExpand"
+                    Clicked="ButtonSignUpConfirm_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
