@@ -220,15 +220,21 @@
                                         OutlineColor="GhostWhite"
                                         Margin="10,10,10,0">
                                         <StackLayout Orientation="Vertical">
-                                            <Image Aspect="Fill"
-                                               VerticalOptions="Start"
-                                               HorizontalOptions="Center"
-                                               Source="testcardimage.jpg"
+                                            <Image Aspect="AspectFill"
+                                               VerticalOptions="FillAndExpand"
+                                               HorizontalOptions="FillAndExpand"
+                                               Source="{Binding Image}"
                                                HeightRequest="150"/>
                                             <StackLayout Orientation="Horizontal"
                                                          Margin="10,0,10,0">
-                                                <Label Text="{Binding Author}"
-                                                       HorizontalOptions="StartAndExpand"/>
+                                                <Label HorizontalOptions="StartAndExpand">
+                                                    <Label.Text>
+                                                        <MultiBinding StringFormat="{}{0} {1}">
+                                                            <Binding Path="Author.FirstName"/>
+                                                            <Binding Path="Author.LastName"/>
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
                                                 <Label Text="{Binding Date}"
                                                        HorizontalOptions="EndAndExpand"/>
                                             </StackLayout>

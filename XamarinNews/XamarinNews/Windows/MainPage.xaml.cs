@@ -18,7 +18,6 @@ namespace XamarinNews.Windows
 {
     public partial class MainPage : TabbedPage
     {
-        private List<Article> _ListProfiles { get; set; } = new List<Article>();
         public MainPage()
         {
             InitializeComponent();
@@ -35,28 +34,14 @@ namespace XamarinNews.Windows
             MainPageSearchImageAvatarUser.Source = Cache.CropAvatar;
             ImageAvatarUser.Source = Cache.FullAvatar;
 
-            for (int i = 0; i < 10; i++)
-            {
-                ImageSource image = ImageSource.FromResource("testcardimage.png");
-
-                _ListProfiles.Add(new Article
-                {
-                    PublishDate = DateTime.Now,
-                    Description = "Description",
-                    Image = image,
-                    Author = null,
-                    Id = i+1000,
-                    Title = "Test",
-                    Likes = 1000,
-                    Dislikes = 1000
-                });
-            }
-
             JObject result = await Api.GetArticles();
             List<Article> articles = JsonConvert.DeserializeObject<List<Article>>(result["message"].ToString());
 
             ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = articles;
-            ListViewProfileNews.ItemsSource = _ListProfiles;
+
+            result = await Api.GetArticlesFromUser(Cache.ID);
+            articles = JsonConvert.DeserializeObject<List<Article>>(result["message"].ToString());
+            ListViewProfileNews.ItemsSource = articles;
 
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfiles.ItemSelected += ListViewProfiles_ItemSelected;

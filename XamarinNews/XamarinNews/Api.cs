@@ -165,5 +165,14 @@ namespace XamarinNews
             JObject value = JObject.Parse(response.Content);
             return value;
         }
+
+        public async static Task<JObject> GetArticlesFromUser(int user_id)
+        {
+            RestRequest request = new RestRequest($"/get-articles-from-user?user_id={user_id}", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            JObject value = JObject.Parse(response.Content);
+            return value;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,6 +24,7 @@ namespace XamarinNews.Windows
             InitializeComponent();
             _authorID = author_user_id;
             Init(follower_user_id);
+            InitArticles();
         }
 
         private async void Init(int follower_user_id)
@@ -59,23 +61,13 @@ namespace XamarinNews.Windows
             LabelNewsProfileText.Text = $"Последние новости от {LabelFirstName.Text} {LabelLastName.Text}";
 
             ButtonSubscribe.Clicked += ButtonSubscribe_Clicked;
+        }
 
-            for (int i = 0; i < 10; i++)
-            {
-                ImageSource image = ImageSource.FromResource("testcardimage.png");
-
-                _List.Add(new Article
-                {
-                    PublishDate = DateTime.Now,
-                    Description = "Description",
-                    Image = image,
-                    Author = null,
-                    Likes = 1000,
-                    Dislikes = 1000,
-                });
-            }
-
-            ListViewProfileNews.ItemsSource = _List;
+        private async void InitArticles()
+        {
+            JObject result = await Api.GetArticlesFromUser(_authorID);
+            List<Article> articles = JsonConvert.DeserializeObject<List<Article>>(result["message"].ToString());
+            ListViewProfileNews.ItemsSource = articles;
             ListViewProfileNews.ItemSelected += ListViewProfileNews_ItemSelected;
         }
 
