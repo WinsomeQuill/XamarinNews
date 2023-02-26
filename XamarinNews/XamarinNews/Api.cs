@@ -2,13 +2,14 @@
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System;
-using XamarinNews.MongoDB.Models;
+using XamarinNews.PostgresSQL.Models;
 using System.Text;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Threading;
 using RestSharp;
-using static Android.Provider.ContactsContract;
+using System.Collections.Generic;
+using XamarinNews.ModelsApi;
 
 namespace XamarinNews
 {
@@ -16,16 +17,7 @@ namespace XamarinNews
     {
         private static RestClient _client = new RestClient("http://192.168.2.104:27000");
 
-        public async static Task<JObject> GetAvatar(string login)
-        {
-            RestRequest request = new RestRequest($"/get-profile-avatar?login={login}", Method.Get);
-            request.AddHeader("Content-Type", "application/json");
-            RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return value;
-        }
-
-        public async static Task<JObject> RegistrationUser(User user)
+        public async static Task<bool> RegistrationUser(RegisterUser user)
         {
             string json = JsonConvert.SerializeObject(user);
 
@@ -33,46 +25,51 @@ namespace XamarinNews
             request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(json);
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return value;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
         }
 
-        public async static Task<JObject> LoginUser(string login, string pass)
+        public async static Task<User> LoginUser(string login, string pass)
         {
             RestRequest request = new RestRequest($"/login-user?login={login}&password={pass}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return value;
+            Response<User> result = new Response<User>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
         }
 
-        public async static Task<JObject> SetAvatar(string login, byte[] crop_avatar, byte[] full_avatar)
+        public async static Task<bool> SetAvatar(string login, byte[] crop_avatar, byte[] full_avatar)
         {
-            string crop_content = Convert.ToBase64String(crop_avatar);
-            string full_content = Convert.ToBase64String(full_avatar);
-
             object json = new
             {
-                login = login,
-                crop_avatar = crop_content,
-                full_avatar = full_content,
+                login,
+                crop_avatar,
+                full_avatar,
             };
 
             RestRequest request = new RestRequest("/set-profile-avatar", Method.Post);
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return value;
+            Response<string> result = new Response<string>(response.Content);
+            return result.Status;
         }
 
-        public async static Task<JObject> UserInfo(int id)
+        public async static Task<User> UserInfo(int id)
         {
-            RestRequest request = new RestRequest($"/user-info?id={id}", Method.Get);
+            RestRequest request = new RestRequest($"/user-info?user_id={id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return value;
+            Response<User> result = new Response<User>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
         }
 
         public async static Task<bool> IsUserFollowed(int author_id, int follow_id)
@@ -80,20 +77,20 @@ namespace XamarinNews
             RestRequest request = new RestRequest($"/is-user-followed?author_user_id={author_id}&follower_user_id={follow_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return (bool)value["message"];
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
         }
 
         public async static Task<int> GetUserCountFollowers(int user_id)
         {
-            RestRequest request = new RestRequest($"/user-count-followers?id={user_id}", Method.Get);
+            RestRequest request = new RestRequest($"/user-count-followers?user_id={user_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return (int)value["message"];
+            Response<int> result = new Response<int>(response.Content);
+            return result.Message;
         }
 
-        public async static Task<JObject> FollowingUser(int author_id, int follower_id)
+        public async static Task<bool> FollowingUser(int author_id, int follower_id)
         {
             object json = new
             {
@@ -105,11 +102,11 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return value;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
         }
 
-        public async static Task<JObject> RemoveFollowingUser(int author_id, int follower_id)
+        public async static Task<bool> RemoveFollowingUser(int author_id, int follower_id)
         {
             object json = new
             {
@@ -121,8 +118,66 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return value;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
+        }
+
+        public async static Task<bool> InsertArticle(int author_id, int follower_id)
+        {
+            object json = new
+            {
+                author_id,
+                follower_id,
+            };
+
+            RestRequest request = new RestRequest("/insert-article", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
+        }
+
+        public async static Task<bool> RemoveArticle(int article_id, int user_id)
+        {
+            object json = new
+            {
+                article_id,
+                user_id,
+            };
+
+            RestRequest request = new RestRequest("/remove-article", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
+        }
+
+        public async static Task<List<Article>> GetArticles()
+        {
+            RestRequest request = new RestRequest("/get-articles", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<List<Article>> result = new Response<List<Article>>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
+        }
+
+        public async static Task<List<Article>> GetArticlesFromUser(int user_id)
+        {
+            RestRequest request = new RestRequest($"/get-articles-from-user?user_id={user_id}", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<List<Article>> result = new Response<List<Article>>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
         }
     }
 }

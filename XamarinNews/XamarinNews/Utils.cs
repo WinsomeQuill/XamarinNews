@@ -1,11 +1,16 @@
 ﻿using Android.Graphics;
 using Java.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XamarinNews.PostgresSQL.Models;
 
 namespace XamarinNews
 {

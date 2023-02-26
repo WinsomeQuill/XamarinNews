@@ -1,5 +1,6 @@
 ﻿using Android.App.Slices;
 using Android.Widget;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Stormlion.ImageCropper;
 using System;
@@ -8,17 +9,16 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using XamarinNews.MongoDB.Models;
+using XamarinNews.PostgresSQL.Models;
 
 namespace XamarinNews.Windows
 {
     public partial class MainPage : TabbedPage
     {
-        private List<Card> _List { get; set; } = new List<Card>();
-        private List<Card> _ListProfiles { get; set; } = new List<Card>();
         public MainPage()
         {
             InitializeComponent();
@@ -27,60 +27,33 @@ namespace XamarinNews.Windows
 
         private async void Init()
         {
+            // Это костыль, чтобы пользователь не смог вернуться назад по кнопке
+            // Просто у xamarin тупая система навигации
+            // Кто знает, как это делается правильно - welcome to pull request
             NavigationPage.SetHasNavigationBar(this, false);
-            JObject result = await Api.GetAvatar(Cache.Login);
-            byte[] crop_avatar = Convert.FromBase64String(result["message"]["crop_avatar"].ToString());
-            byte[] full_avatar = Convert.FromBase64String(result["message"]["full_avatar"].ToString());
 
-            if (crop_avatar.Length > 0)
+            MainPageSearchImageAvatarUser.Source = Cache.CropAvatar;
+            ImageAvatarUser.Source = Cache.FullAvatar;
+
+            await Task.Run(() =>
             {
-                MainPageSearchImageAvatarUser.Source = ImageSource.FromStream(() =>
+                Device.BeginInvokeOnMainThread(async () =>
                 {
-                    return new MemoryStream(crop_avatar);
-                });
-            }
+                    List<Article> articles = await Api.GetArticles();
+                    ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = articles;
 
-            if (full_avatar.Length > 0)
+                });
+            });
+
+            await Task.Run(() =>
             {
-                ImageAvatarUser.Source = Cache.FullAvatar = ImageSource.FromStream(() =>
+                Device.BeginInvokeOnMainThread(async () =>
                 {
-                    return new MemoryStream(full_avatar);
+                    List<Article> articles = await Api.GetArticlesFromUser(Cache.ID);
+                    ListViewProfileNews.ItemsSource = articles;
                 });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                ImageSource image = ImageSource.FromResource("testcardimage.png");
-
-                _ListProfiles.Add(new Card
-                {
-                    Date = "12.12.2012",
-                    Description = "Description",
-                    Image = image,
-                    Author = "Автор: РИО Новости",
-                    AuthorID = 2,
-                    Likes = "1000",
-                    Dislikes = "1000",
-                });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                ImageSource image = ImageSource.FromResource("testcardimage.png");
-
-                _List.Add(new Card {
-                    Date = "12.12.2012",
-                    Description = "Description",
-                    Image = image,
-                    Author = "Автор: РИО Новости",
-                    AuthorID = 2,
-                    Likes = "1000",
-                    Dislikes = "1000",
-                });
-            }
-
-            ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = _List;
-            ListViewProfiles.ItemsSource = _ListProfiles;
+            });
+            
 
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfiles.ItemSelected += ListViewProfiles_ItemSelected;
@@ -88,8 +61,8 @@ namespace XamarinNews.Windows
 
         private async void ListViewProfiles_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Card item = (Card)e.SelectedItem;
-            await Navigation.PushAsync(new AnotherProfile(item.AuthorID, Cache.ID));
+            Article item = (Article)e.SelectedItem;
+            await Navigation.PushAsync(new AnotherProfile(item.Author.Id, Cache.ID));
         }
 
         private void SearchNews_TextChanged(object sender, TextChangedEventArgs e)
@@ -99,12 +72,24 @@ namespace XamarinNews.Windows
 
         private async void ListViewNews_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Card item = (Card)e.SelectedItem;
-            await Navigation.PushAsync(new FullArticle());
+            Article item = (Article)e.SelectedItem;
+            await Navigation.PushAsync(new FullArticle(item));
         }
 
         private async void ButtonChangePhoto_Clicked(object sender, EventArgs e)
         {
+            PermissionStatus storageRead = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
+            PermissionStatus storageWrite = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+            PermissionStatus photos = await Permissions.CheckStatusAsync<Permissions.Photos>();
+
+            if (storageRead == PermissionStatus.Denied || storageWrite == PermissionStatus.Denied
+                || photos == PermissionStatus.Denied)
+            {
+                await Permissions.RequestAsync<Permissions.StorageRead>();
+                await Permissions.RequestAsync<Permissions.StorageWrite>();
+                await Permissions.RequestAsync<Permissions.Photos>();
+            }
+
             FilePickerFileType customFileType = FilePickerFileType.Images;
 
             PickOptions options = new PickOptions
@@ -136,8 +121,10 @@ namespace XamarinNews.Windows
                             Device.BeginInvokeOnMainThread(async () =>
                             {
                                 byte[] crop_avatar = File.ReadAllBytes(imageFile);
-                                MainPageSearchImageAvatarUser.Source = Cache.CropAvatar = ImageSource.FromFile(imageFile);
-                                ImageAvatarUser.Source = ImageSource.FromFile(result.FullPath);
+                                MainPageSearchImageAvatarUser.Source = ImageAvatarUser.Source = Cache.CropAvatar = ImageSource.FromStream(() =>
+                                {
+                                    return new MemoryStream(crop_avatar);
+                                });
                                 await Api.SetAvatar(Cache.Login, crop_avatar, full_avatar);
                             });
                         }

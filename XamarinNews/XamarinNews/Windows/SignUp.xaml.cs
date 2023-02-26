@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using XamarinNews.MongoDB.Models;
+using XamarinNews.PostgresSQL.Models;
 
 namespace XamarinNews.Windows
 {
@@ -26,23 +27,24 @@ namespace XamarinNews.Windows
             string login = EntrySignUpLogin.Text;
             string password = EntrySignUpPassword.Text;
 
-            User user = new User(firstName, lastName, null, login, password);
-            JObject result = await Api.RegistrationUser(user);
-            if (result["status"].ToString() == "error")
+            RegisterUser user = new RegisterUser(firstName, lastName, null, login, password);
+            bool result = await Api.RegistrationUser(user);
+            if (!result)
             {
-                LabelError.Text = result["message"].ToString();
+                LabelError.Text = "Failed registration!";
                 return;
             }
 
-            if (result["status"].ToString() == "success")
-            {
-                Cache.Login = login;
-                Cache.ID = (int)result["message"]["id"];
-                Cache.Description = null;
-                Cache.FirstName = firstName;
-                Cache.LastName = lastName;
-                await Navigation.PushAsync(new MainPage());
-            }
+            User newuser = await Api.LoginUser(login, password);
+
+            Cache.Login = login;
+            Cache.ID = newuser.Id;
+            Cache.About = newuser.About;
+            Cache.FirstName = newuser.FirstName;
+            Cache.LastName = newuser.LastName;
+            Cache.CropAvatar = newuser.CropAvatar;
+            Cache.FullAvatar = newuser.FullAvatar;
+            await Navigation.PushAsync(new MainPage());
         }
     }
 }
