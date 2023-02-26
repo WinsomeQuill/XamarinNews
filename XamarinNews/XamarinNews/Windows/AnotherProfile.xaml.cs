@@ -29,20 +29,12 @@ namespace XamarinNews.Windows
 
         private async void Init(int follower_user_id)
         {
-            JObject user = await Api.UserInfo(_authorID);
+            User user = await Api.UserInfo(_authorID);
             bool isFollowed = await Api.IsUserFollowed(_authorID, follower_user_id);
             _isSubsribe = isFollowed;
-            LabelFirstName.Text = user["message"]["first_name"].ToString();
-            LabelLastName.Text = user["message"]["last_name"].ToString();
-
-            if (user["message"]["crop_avatar"] != null)
-            {
-                byte[] crop_avatar = Convert.FromBase64String(user["message"]["crop_avatar"].ToString());
-                ImageAvatarUser.Source = ImageSource.FromStream(() =>
-                {
-                    return new MemoryStream(crop_avatar);
-                });
-            }
+            LabelFirstName.Text = user.FirstName.ToString();
+            LabelLastName.Text = user.LastName.ToString();
+            ImageAvatarUser.Source = user.CropAvatar;
 
             if (isFollowed)
             {
@@ -55,9 +47,9 @@ namespace XamarinNews.Windows
                 ButtonSubscribe.Text = "Подписаться";
             }
 
-            LabelTimestampRegistration.Text = user["message"]["date_registration"].ToString();
+            LabelTimestampRegistration.Text = user.DateRegistration.ToString();
             LabelCountFollowers.Text = $"{await Api.GetUserCountFollowers(_authorID)}";
-            LabelDescription.Text = user["message"]["about"].ToString();
+            LabelDescription.Text = user.About;
             LabelNewsProfileText.Text = $"Последние новости от {LabelFirstName.Text} {LabelLastName.Text}";
 
             ButtonSubscribe.Clicked += ButtonSubscribe_Clicked;
@@ -65,8 +57,7 @@ namespace XamarinNews.Windows
 
         private async void InitArticles()
         {
-            JObject result = await Api.GetArticlesFromUser(_authorID);
-            List<Article> articles = JsonConvert.DeserializeObject<List<Article>>(result["message"].ToString());
+            List<Article> articles = await Api.GetArticlesFromUser(_authorID);
             ListViewProfileNews.ItemsSource = articles;
             ListViewProfileNews.ItemSelected += ListViewProfileNews_ItemSelected;
         }
@@ -81,9 +72,8 @@ namespace XamarinNews.Windows
         {
             if (!_isSubsribe)
             {
-                JObject result = await Api.FollowingUser(_authorID, Cache.ID);
-                string status = result["status"].ToString();
-                if (status == "success")
+                bool result = await Api.FollowingUser(_authorID, Cache.ID);
+                if (result)
                 {
                     SubscribeInfo.Text = "Вы подписаны";
                     ButtonSubscribe.IsEnabled = false;
@@ -97,9 +87,8 @@ namespace XamarinNews.Windows
             }
             else
             {
-                JObject result = await Api.RemoveFollowingUser(_authorID, Cache.ID);
-                string status = result["status"].ToString();
-                if (status == "success")
+                bool result = await Api.RemoveFollowingUser(_authorID, Cache.ID);
+                if (result)
                 {
                     SubscribeInfo.Text = "Вы отписались";
                     ButtonSubscribe.IsEnabled = false;

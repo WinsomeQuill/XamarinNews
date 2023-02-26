@@ -34,13 +34,10 @@ namespace XamarinNews.Windows
             MainPageSearchImageAvatarUser.Source = Cache.CropAvatar;
             ImageAvatarUser.Source = Cache.FullAvatar;
 
-            JObject result = await Api.GetArticles();
-            List<Article> articles = JsonConvert.DeserializeObject<List<Article>>(result["message"].ToString());
-
+            List<Article> articles = await Api.GetArticles();
             ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = articles;
 
-            result = await Api.GetArticlesFromUser(Cache.ID);
-            articles = JsonConvert.DeserializeObject<List<Article>>(result["message"].ToString());
+            articles = await Api.GetArticlesFromUser(Cache.ID);
             ListViewProfileNews.ItemsSource = articles;
 
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;

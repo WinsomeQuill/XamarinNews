@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace XamarinNews.PostgresSQL.Models
 {
-    public class User
+    public class FullUser
     {
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -21,6 +21,15 @@ namespace XamarinNews.PostgresSQL.Models
         [JsonProperty("about")]
         public string About { get; set; }
 
+        [JsonProperty("login")]
+        public string Login { get; set; }
+
+        [JsonProperty("password")]
+        public string Password { get; set; }
+
+        [JsonProperty("date_registration")]
+        public string DateRegistration { get; set; }
+
         [JsonIgnore]
         public ImageSource CropAvatar { get; set; }
 
@@ -28,11 +37,16 @@ namespace XamarinNews.PostgresSQL.Models
         public ImageSource FullAvatar { get; set; }
 
 
-        [JsonProperty("date_registration")]
-        public string DateRegistration { get; set; }
+        public FullUser(string firstName, string lastName, string about, string login)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            About = about;
+            Login = login;
+        }
 
         [JsonConstructor]
-        public User(string crop_avatar, string full_avatar)
+        public FullUser(string crop_avatar, string full_avatar)
         {
             CropAvatar = ImageSource.FromStream(() =>
             {

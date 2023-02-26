@@ -31,14 +31,12 @@ namespace XamarinNews.Windows
 
             try
             {
-                JObject result = await Api.LoginUser(login, pass);
-                if (result["status"].ToString() == "error")
+                User user = await Api.LoginUser(login, pass);
+                if (user == null)
                 {
-                    LabelError.Text = result["message"].ToString();
+                    LabelError.Text = "User not found!";
                     return;
                 }
-
-                User user = JsonConvert.DeserializeObject<User>(result["message"].ToString());
 
                 Cache.Login = login;
                 Cache.ID = user.Id;
