@@ -44,14 +44,11 @@ namespace XamarinNews
 
         public async static Task<bool> SetAvatar(string login, byte[] crop_avatar, byte[] full_avatar)
         {
-            string crop_content = Convert.ToBase64String(crop_avatar);
-            string full_content = Convert.ToBase64String(full_avatar);
-
             object json = new
             {
                 login,
-                crop_avatar = crop_content,
-                full_avatar = full_content,
+                crop_avatar,
+                full_avatar,
             };
 
             RestRequest request = new RestRequest("/set-profile-avatar", Method.Post);
@@ -64,7 +61,7 @@ namespace XamarinNews
 
         public async static Task<User> UserInfo(int id)
         {
-            RestRequest request = new RestRequest($"/user-info?id={id}", Method.Get);
+            RestRequest request = new RestRequest($"/user-info?user_id={id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
             Response<User> result = new Response<User>(response.Content);
@@ -86,7 +83,7 @@ namespace XamarinNews
 
         public async static Task<int> GetUserCountFollowers(int user_id)
         {
-            RestRequest request = new RestRequest($"/user-count-followers?id={user_id}", Method.Get);
+            RestRequest request = new RestRequest($"/user-count-followers?user_id={user_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
             Response<int> result = new Response<int>(response.Content);

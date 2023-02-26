@@ -27,22 +27,15 @@ namespace XamarinNews.PostgresSQL.Models
         [JsonIgnore]
         public ImageSource FullAvatar { get; set; }
 
-
         [JsonProperty("date_registration")]
         public string DateRegistration { get; set; }
 
         [JsonConstructor]
-        public User(string crop_avatar, string full_avatar)
+        public User(byte[] crop_avatar, byte[] full_avatar)
         {
-            CropAvatar = ImageSource.FromStream(() =>
-            {
-                return new MemoryStream(Convert.FromBase64String(crop_avatar));
-            });
+            CropAvatar = ImageSource.FromStream(() => new MemoryStream(crop_avatar));
 
-            FullAvatar = ImageSource.FromStream(() =>
-            {
-                return new MemoryStream(Convert.FromBase64String(full_avatar));
-            });
+            FullAvatar = ImageSource.FromStream(() => new MemoryStream(full_avatar));
         }
     }
 }

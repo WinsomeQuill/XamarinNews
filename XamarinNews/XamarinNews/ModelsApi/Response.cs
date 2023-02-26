@@ -18,7 +18,14 @@ namespace XamarinNews.ModelsApi
             Status = value["status"].ToString() == "success";
             if (Status)
             {
-                Message = JsonConvert.DeserializeObject<T>(value["message"].ToString());
+                try
+                {
+                    Message = JsonConvert.DeserializeObject<T>(value["message"].ToString());
+                }
+                catch
+                {
+                    Message = value["message"].Value<T>();
+                }
             }
             else
             {

@@ -31,21 +31,27 @@ namespace XamarinNews.Windows
 
             try
             {
-                User user = await Api.LoginUser(login, pass);
-                if (user == null)
+                await Task.Run(() =>
                 {
-                    LabelError.Text = "User not found!";
-                    return;
-                }
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        User user = await Api.LoginUser(login, pass);
+                        if (user == null)
+                        {
+                            LabelError.Text = "User not found!";
+                            return;
+                        }
 
-                Cache.Login = login;
-                Cache.ID = user.Id;
-                Cache.About = user.About;
-                Cache.FirstName = user.FirstName;
-                Cache.LastName = user.LastName;
-                Cache.CropAvatar = user.CropAvatar;
-                Cache.FullAvatar = user.FullAvatar;
-                await Navigation.PushAsync(new MainPage());
+                        Cache.Login = login;
+                        Cache.ID = user.Id;
+                        Cache.About = user.About;
+                        Cache.FirstName = user.FirstName;
+                        Cache.LastName = user.LastName;
+                        Cache.CropAvatar = user.CropAvatar;
+                        Cache.FullAvatar = user.FullAvatar;
+                        await Navigation.PushAsync(new MainPage());
+                    });
+                });
             }
             catch (Exception ex)
             {

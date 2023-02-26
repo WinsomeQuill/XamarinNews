@@ -35,11 +35,25 @@ namespace XamarinNews.Windows
             MainPageSearchImageAvatarUser.Source = Cache.CropAvatar;
             ImageAvatarUser.Source = Cache.FullAvatar;
 
-            List<Article> articles = await Api.GetArticles();
-            ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = articles;
+            await Task.Run(() =>
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    List<Article> articles = await Api.GetArticles();
+                    ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = articles;
 
-            articles = await Api.GetArticlesFromUser(Cache.ID);
-            ListViewProfileNews.ItemsSource = articles;
+                });
+            });
+
+            await Task.Run(() =>
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    List<Article> articles = await Api.GetArticlesFromUser(Cache.ID);
+                    ListViewProfileNews.ItemsSource = articles;
+                });
+            });
+            
 
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfiles.ItemSelected += ListViewProfiles_ItemSelected;
@@ -107,8 +121,10 @@ namespace XamarinNews.Windows
                             Device.BeginInvokeOnMainThread(async () =>
                             {
                                 byte[] crop_avatar = File.ReadAllBytes(imageFile);
-                                MainPageSearchImageAvatarUser.Source = Cache.CropAvatar = ImageSource.FromFile(imageFile);
-                                ImageAvatarUser.Source = ImageSource.FromFile(result.FullPath);
+                                MainPageSearchImageAvatarUser.Source = ImageAvatarUser.Source = Cache.CropAvatar = ImageSource.FromStream(() =>
+                                {
+                                    return new MemoryStream(crop_avatar);
+                                });
                                 await Api.SetAvatar(Cache.Login, crop_avatar, full_avatar);
                             });
                         }

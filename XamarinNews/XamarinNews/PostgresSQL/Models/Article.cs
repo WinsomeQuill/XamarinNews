@@ -36,11 +36,11 @@ namespace XamarinNews.PostgresSQL.Models
         public Article() { }
 
         [JsonConstructor]
-        public Article(string image)
+        public Article(byte[] image)
         {
             Image = ImageSource.FromStream(() =>
             {
-                return new MemoryStream(Convert.FromBase64String(image));
+                return new MemoryStream(image);
             });
         }
     }
