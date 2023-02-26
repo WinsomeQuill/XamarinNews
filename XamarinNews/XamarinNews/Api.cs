@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using RestSharp;
 using System.Collections.Generic;
+using XamarinNews.ModelsApi;
 
 namespace XamarinNews
 {
@@ -24,12 +25,8 @@ namespace XamarinNews
             request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(json);
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
-            {
-                return true;
-            }
-            return false;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
         }
 
         public async static Task<User> LoginUser(string login, string pass)
@@ -37,11 +34,10 @@ namespace XamarinNews
             RestRequest request = new RestRequest($"/login-user?login={login}&password={pass}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
+            Response<User> result = new Response<User>(response.Content);
+            if (result.Status)
             {
-                User user = JsonConvert.DeserializeObject<User>(value["message"].ToString());
-                return user;
+                return result.Message;
             }
             return null;
         }
@@ -53,7 +49,7 @@ namespace XamarinNews
 
             object json = new
             {
-                login = login,
+                login,
                 crop_avatar = crop_content,
                 full_avatar = full_content,
             };
@@ -62,12 +58,8 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
-            {
-                return true;
-            }
-            return false;
+            Response<string> result = new Response<string>(response.Content);
+            return result.Status;
         }
 
         public async static Task<User> UserInfo(int id)
@@ -75,11 +67,10 @@ namespace XamarinNews
             RestRequest request = new RestRequest($"/user-info?id={id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
+            Response<User> result = new Response<User>(response.Content);
+            if (result.Status)
             {
-                User user = JsonConvert.DeserializeObject<User>(value["message"].ToString());
-                return user;
+                return result.Message;
             }
             return null;
         }
@@ -89,8 +80,8 @@ namespace XamarinNews
             RestRequest request = new RestRequest($"/is-user-followed?author_user_id={author_id}&follower_user_id={follow_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return (bool)value["message"];
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
         }
 
         public async static Task<int> GetUserCountFollowers(int user_id)
@@ -98,8 +89,8 @@ namespace XamarinNews
             RestRequest request = new RestRequest($"/user-count-followers?id={user_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            return (int)value["message"];
+            Response<int> result = new Response<int>(response.Content);
+            return result.Message;
         }
 
         public async static Task<bool> FollowingUser(int author_id, int follower_id)
@@ -114,12 +105,8 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
-            {
-                return true;
-            }
-            return false;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
         }
 
         public async static Task<bool> RemoveFollowingUser(int author_id, int follower_id)
@@ -134,12 +121,8 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
-            {
-                return true;
-            }
-            return false;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
         }
 
         public async static Task<bool> InsertArticle(int author_id, int follower_id)
@@ -154,12 +137,8 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
-            {
-                return true;
-            }
-            return false;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
         }
 
         public async static Task<bool> RemoveArticle(int article_id, int user_id)
@@ -174,12 +153,8 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
-            {
-                return true;
-            }
-            return false;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Status;
         }
 
         public async static Task<List<Article>> GetArticles()
@@ -187,11 +162,10 @@ namespace XamarinNews
             RestRequest request = new RestRequest("/get-articles", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
+            Response<List<Article>> result = new Response<List<Article>>(response.Content);
+            if (result.Status)
             {
-                List<Article> articles = JsonConvert.DeserializeObject<List<Article>>(value["message"].ToString());
-                return articles;
+                return result.Message;
             }
             return null;
         }
@@ -201,11 +175,10 @@ namespace XamarinNews
             RestRequest request = new RestRequest($"/get-articles-from-user?user_id={user_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            JObject value = JObject.Parse(response.Content);
-            if (value["status"].ToString() == "success")
+            Response<List<Article>> result = new Response<List<Article>>(response.Content);
+            if (result.Status)
             {
-                List<Article> articles = JsonConvert.DeserializeObject<List<Article>>(value["message"].ToString());
-                return articles;
+                return result.Message;
             }
             return null;
         }

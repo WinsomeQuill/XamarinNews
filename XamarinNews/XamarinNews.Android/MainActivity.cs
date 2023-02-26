@@ -6,6 +6,8 @@ using Android.Runtime;
 using Android.OS;
 using Stormlion.ImageCropper.Droid;
 using Android.Content;
+using AndroidX.Core.App;
+using AndroidX.Core.Content;
 
 namespace XamarinNews.Droid
 {

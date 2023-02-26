@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -63,6 +64,18 @@ namespace XamarinNews.Windows
 
         private async void ButtonChangePhoto_Clicked(object sender, EventArgs e)
         {
+            PermissionStatus storageRead = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
+            PermissionStatus storageWrite = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+            PermissionStatus photos = await Permissions.CheckStatusAsync<Permissions.Photos>();
+
+            if (storageRead == PermissionStatus.Denied || storageWrite == PermissionStatus.Denied
+                || photos == PermissionStatus.Denied)
+            {
+                await Permissions.RequestAsync<Permissions.StorageRead>();
+                await Permissions.RequestAsync<Permissions.StorageWrite>();
+                await Permissions.RequestAsync<Permissions.Photos>();
+            }
+
             FilePickerFileType customFileType = FilePickerFileType.Images;
 
             PickOptions options = new PickOptions
