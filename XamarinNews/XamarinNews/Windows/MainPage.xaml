@@ -3,6 +3,7 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="XamarinNews.Windows.MainPage"
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            xmlns:elements="clr-namespace:XamarinNews.Elements.MainPage"
             android:TabbedPage.ToolbarPlacement="Bottom">
     <ContentPage Title="Главная" IconImageSource="main_page.png">
         <StackLayout Orientation="Vertical"
@@ -42,63 +43,7 @@
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.View>
-                                <Frame IsClippedToBounds="True"
-                                            CornerRadius="5"
-                                            Padding="0"
-                                            HasShadow="False"
-                                            BorderColor="GhostWhite"
-                                            Margin="10,10,10,0">
-                                    <StackLayout Orientation="Vertical">
-                                        <Image Aspect="AspectFill"
-                                                   VerticalOptions="FillAndExpand"
-                                                   HorizontalOptions="FillAndExpand"
-                                                   Source="{Binding Image}"
-                                                   HeightRequest="150"/>
-                                        <StackLayout Orientation="Horizontal"
-                                                         Margin="10,0,10,0">
-                                            <Label HorizontalOptions="StartAndExpand">
-                                                <Label.Text>
-                                                    <MultiBinding StringFormat="{}{0} {1}">
-                                                        <Binding Path="Author.FirstName"/>
-                                                        <Binding Path="Author.LastName"/>
-                                                    </MultiBinding>
-                                                </Label.Text>
-                                            </Label>
-                                            <Label Text="{Binding PublishDate}"
-                                                       HorizontalOptions="EndAndExpand"/>
-                                        </StackLayout>
-                                        <Label Text="{Binding Title}"
-                                                   FontAttributes="Bold"
-                                                   FontSize="16"
-                                                   HorizontalOptions="CenterAndExpand"/>
-                                        <Label Text="{Binding Description}"
-                                                   Margin="10,0,0,0"/>
-                                        <StackLayout Orientation="Horizontal"
-                                                     Margin="10,0,0,10"
-                                                     VerticalOptions="EndAndExpand">
-                                            <Image Source="like.png"
-                                                   HeightRequest="20"
-                                                   WidthRequest="20"
-                                                   HorizontalOptions="Start"/>
-                                            <Label Text="{Binding Likes}"
-                                                        HorizontalOptions="Start"/>
-                                            <Image Source="dislike.png"
-                                                   HeightRequest="20"
-                                                   WidthRequest="20"
-                                                   HorizontalOptions="Start"/>
-                                            <Label Text="{Binding Dislikes}"
-                                                       HorizontalOptions="Start"/>
-
-                                            <Image Source="comments.png"
-                                                   HeightRequest="20"
-                                                   WidthRequest="20"
-                                                   HorizontalOptions="EndAndExpand"/>
-                                            <Label Text="{Binding Dislikes}"
-                                                    HorizontalOptions="End"
-                                                    Margin="10,0,10,0"/>
-                                        </StackLayout>
-                                    </StackLayout>
-                                </Frame>
+                                <elements:ListViewCellPreviewArticle/>
                             </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>
@@ -217,63 +162,7 @@
                         <DataTemplate>
                             <ViewCell>
                                 <ViewCell.View>
-                                    <Frame IsClippedToBounds="True"
-                                            CornerRadius="5"
-                                            Padding="0"
-                                            HasShadow="False"
-                                            BorderColor="GhostWhite"
-                                            Margin="10,10,10,0">
-                                        <StackLayout Orientation="Vertical">
-                                            <Image Aspect="AspectFill"
-                                                   VerticalOptions="FillAndExpand"
-                                                   HorizontalOptions="FillAndExpand"
-                                                   Source="{Binding Image}"
-                                                   HeightRequest="150"/>
-                                            <StackLayout Orientation="Horizontal"
-                                                         Margin="10,0,10,0">
-                                                <Label HorizontalOptions="StartAndExpand">
-                                                    <Label.Text>
-                                                        <MultiBinding StringFormat="{}{0} {1}">
-                                                            <Binding Path="Author.FirstName"/>
-                                                            <Binding Path="Author.LastName"/>
-                                                        </MultiBinding>
-                                                    </Label.Text>
-                                                </Label>
-                                                <Label Text="{Binding PublishDate}"
-                                                       HorizontalOptions="EndAndExpand"/>
-                                            </StackLayout>
-                                            <Label Text="{Binding Title}"
-                                                   FontAttributes="Bold"
-                                                   FontSize="16"
-                                                   HorizontalOptions="CenterAndExpand"/>
-                                            <Label Text="{Binding Description}"
-                                                   Margin="10,0,0,0"/>
-                                            <StackLayout Orientation="Horizontal"
-                                                     Margin="10,0,0,10"
-                                                     VerticalOptions="EndAndExpand">
-                                                <Image Source="like.png"
-                                                   HeightRequest="20"
-                                                   WidthRequest="20"
-                                                   HorizontalOptions="Start"/>
-                                                <Label Text="{Binding Likes}"
-                                                        HorizontalOptions="Start"/>
-                                                <Image Source="dislike.png"
-                                                   HeightRequest="20"
-                                                   WidthRequest="20"
-                                                   HorizontalOptions="Start"/>
-                                                <Label Text="{Binding Dislikes}"
-                                                       HorizontalOptions="Start"/>
-
-                                                <Image Source="comments.png"
-                                                   HeightRequest="20"
-                                                   WidthRequest="20"
-                                                   HorizontalOptions="EndAndExpand"/>
-                                                <Label Text="{Binding Dislikes}"
-                                                    HorizontalOptions="End"
-                                                    Margin="10,0,10,0"/>
-                                            </StackLayout>
-                                        </StackLayout>
-                                    </Frame>
+                                    <elements:ListViewCellPreviewArticle/>
                                 </ViewCell.View>
                             </ViewCell>
                         </DataTemplate>
