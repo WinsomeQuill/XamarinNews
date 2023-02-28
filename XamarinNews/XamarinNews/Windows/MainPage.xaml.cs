@@ -56,6 +56,7 @@ namespace XamarinNews.Windows
             
 
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;
+            ListViewProfileNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfiles.ItemSelected += ListViewProfiles_ItemSelected;
         }
 
