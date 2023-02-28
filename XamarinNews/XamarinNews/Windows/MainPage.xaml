@@ -36,24 +36,24 @@
                 </StackLayout>
             </Frame>
             <ListView x:Name="ListViewNews"
-                      RowHeight="300"
+                      RowHeight="350"
                       VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.View>
                                 <Frame IsClippedToBounds="True"
-                                           CornerRadius="5"
-                                           Padding="0"
-                                           HasShadow="False"
-                                           OutlineColor="GhostWhite"
-                                           Margin="10,10,10,0">
+                                            CornerRadius="5"
+                                            Padding="0"
+                                            HasShadow="False"
+                                            BorderColor="GhostWhite"
+                                            Margin="10,10,10,0">
                                     <StackLayout Orientation="Vertical">
                                         <Image Aspect="AspectFill"
-                                               VerticalOptions="FillAndExpand"
-                                               HorizontalOptions="FillAndExpand"
-                                               Source="{Binding Image}"
-                                               HeightRequest="150"/>
+                                                   VerticalOptions="FillAndExpand"
+                                                   HorizontalOptions="FillAndExpand"
+                                                   Source="{Binding Image}"
+                                                   HeightRequest="150"/>
                                         <StackLayout Orientation="Horizontal"
                                                          Margin="10,0,10,0">
                                             <Label HorizontalOptions="StartAndExpand">
@@ -67,6 +67,10 @@
                                             <Label Text="{Binding PublishDate}"
                                                        HorizontalOptions="EndAndExpand"/>
                                         </StackLayout>
+                                        <Label Text="{Binding Title}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="16"
+                                                   HorizontalOptions="CenterAndExpand"/>
                                         <Label Text="{Binding Description}"
                                                    Margin="10,0,0,0"/>
                                         <StackLayout Orientation="Horizontal"
@@ -207,24 +211,24 @@
                            HorizontalOptions="CenterAndExpand"/>
                 </StackLayout>
                 <ListView x:Name="ListViewProfileNews"
-                          RowHeight="300"
+                          RowHeight="350"
                           VerticalOptions="Start">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <ViewCell.View>
                                     <Frame IsClippedToBounds="True"
-                                        CornerRadius="5"
-                                        Padding="0"
-                                        HasShadow="False"
-                                        OutlineColor="GhostWhite"
-                                        Margin="10,10,10,0">
+                                            CornerRadius="5"
+                                            Padding="0"
+                                            HasShadow="False"
+                                            BorderColor="GhostWhite"
+                                            Margin="10,10,10,0">
                                         <StackLayout Orientation="Vertical">
                                             <Image Aspect="AspectFill"
-                                               VerticalOptions="FillAndExpand"
-                                               HorizontalOptions="FillAndExpand"
-                                               Source="{Binding Image}"
-                                               HeightRequest="150"/>
+                                                   VerticalOptions="FillAndExpand"
+                                                   HorizontalOptions="FillAndExpand"
+                                                   Source="{Binding Image}"
+                                                   HeightRequest="150"/>
                                             <StackLayout Orientation="Horizontal"
                                                          Margin="10,0,10,0">
                                                 <Label HorizontalOptions="StartAndExpand">
@@ -235,9 +239,13 @@
                                                         </MultiBinding>
                                                     </Label.Text>
                                                 </Label>
-                                                <Label Text="{Binding Date}"
+                                                <Label Text="{Binding PublishDate}"
                                                        HorizontalOptions="EndAndExpand"/>
                                             </StackLayout>
+                                            <Label Text="{Binding Title}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="16"
+                                                   HorizontalOptions="CenterAndExpand"/>
                                             <Label Text="{Binding Description}"
                                                    Margin="10,0,0,0"/>
                                             <StackLayout Orientation="Horizontal"
