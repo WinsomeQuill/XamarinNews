@@ -25,7 +25,7 @@ namespace XamarinNews
             request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(json);
             RestResponse response = await _client.ExecuteAsync(request);
-            Response<bool> result = new Response<bool>(response.Content);
+            Response<string> result = new Response<string>(response.Content);
             return result.Status;
         }
 
@@ -77,7 +77,7 @@ namespace XamarinNews
             RestRequest request = new RestRequest($"/is-user-followed?author_user_id={author_id}&follower_user_id={follow_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            Response<bool> result = new Response<bool>(response.Content);
+            Response<string> result = new Response<string>(response.Content);
             return result.Status;
         }
 
@@ -102,7 +102,7 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            Response<bool> result = new Response<bool>(response.Content);
+            Response<string> result = new Response<string>(response.Content);
             return result.Status;
         }
 
@@ -118,7 +118,7 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            Response<bool> result = new Response<bool>(response.Content);
+            Response<string> result = new Response<string>(response.Content);
             return result.Status;
         }
 
@@ -134,7 +134,7 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            Response<bool> result = new Response<bool>(response.Content);
+            Response<string> result = new Response<string>(response.Content);
             return result.Status;
         }
 
@@ -150,7 +150,7 @@ namespace XamarinNews
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            Response<bool> result = new Response<bool>(response.Content);
+            Response<string> result = new Response<string>(response.Content);
             return result.Status;
         }
 
