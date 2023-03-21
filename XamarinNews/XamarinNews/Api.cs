@@ -122,12 +122,14 @@ namespace XamarinNews
             return result.Status;
         }
 
-        public async static Task<bool> InsertArticle(int author_id, int follower_id)
+        public async static Task<bool> InsertArticle(int author_id, byte[] image, string title, string description)
         {
             object json = new
             {
                 author_id,
-                follower_id,
+                image,
+                title,
+                description
             };
 
             RestRequest request = new RestRequest("/insert-article", Method.Post);

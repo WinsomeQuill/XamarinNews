@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinNews.Windows.InsertArticle">
+    <ContentPage.Content>
+        <StackLayout Margin="10">
+            <Frame CornerRadius="5"
+                   IsClippedToBounds="True"
+                   Padding="0"
+                   HeightRequest="200"
+                   HorizontalOptions="FillAndExpand">
+                <Image x:Name="ImageArticleCover"
+                       Aspect="AspectFill"
+                       HorizontalOptions="FillAndExpand"/>
+            </Frame>
+
+            <Entry x:Name="EntryTitle"
+                   Placeholder="Введите заголовок"
+                   Margin="0,10,0,0"/>
+            <Editor x:Name="EditorDescription"
+                   Placeholder="Введите описание"
+                   Margin="0,10,0,0"
+                   VerticalOptions="FillAndExpand"
+                   MaxLength="500"/>
+
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="ButtonUploadCover"
+                        Grid.Column="0"
+                        Text="Выбрать обложку"
+                        Clicked="ButtonUploadCover_Clicked"/>
+                <Button x:Name="ButtonPublish"
+                        Grid.Column="1"
+                        Text="Опубликовать"
+                        Clicked="ButtonPublish_Clicked"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

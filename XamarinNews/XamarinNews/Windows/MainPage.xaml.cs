@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using XamarinNews.PostgresSQL.Models;
+using static Android.Content.ClipData;
 
 namespace XamarinNews.Windows
 {
@@ -132,6 +133,11 @@ namespace XamarinNews.Windows
                     }.Show(this, result.FullPath);
                 }
             }
+        }
+
+        private async void ButtonCreateArticle_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new InsertArticle());
         }
     }
 }

@@ -138,6 +138,9 @@
                     <Button x:Name="ButtonChangePhoto"
                         Text="Сменить фото"
                         Clicked="ButtonChangePhoto_Clicked"/>
+                    <Button x:Name="ButtonCreateArticle"
+                        Text="Создать запись"
+                        Clicked="ButtonCreateArticle_Clicked"/>
                     <StackLayout Orientation="Horizontal"
                             HorizontalOptions="CenterAndExpand">
                         <Label Text="Followers:"
