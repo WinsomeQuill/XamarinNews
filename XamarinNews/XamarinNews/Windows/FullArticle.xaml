@@ -69,7 +69,10 @@
                                  Source="sendcomment.png"
                                  HeightRequest="20"
                                  WidthRequest="20"
-                                 HorizontalOptions="EndAndExpand"
+                                 HorizontalOptions="FillAndExpand"
+                                 BackgroundColor="Transparent"
+                                 Background="Transparent"
+                                 BorderColor="Transparent"
                                  Clicked="ImageButtonSendComment_Clicked"/>
                 </StackLayout>
 

@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using XamarinNews.PostgresSQL.Models;
-using static Android.Content.ClipData;
 
 namespace XamarinNews.Windows
 {
