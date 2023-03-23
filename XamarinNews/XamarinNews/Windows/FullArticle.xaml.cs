@@ -13,7 +13,8 @@ namespace XamarinNews.Windows
 {
     public partial class FullArticle : ContentPage
     {
-        private List<FullArticleComment> _Comments { get; set; } = new List<FullArticleComment>();
+        public int Id { get; set; }
+        private List<Comment> _Comments { get; set; } = new List<Comment>();
 
         public FullArticle(Article article)
         {
@@ -25,27 +26,42 @@ namespace XamarinNews.Windows
             ImageReaderAvatar.Source = Cache.CropAvatar;
             LabelAuthorName.Text = $"{article.Author.FirstName} {article.Author.LastName}";
             ImageAuthorAvatar.Source = article.Author.CropAvatar;
+            Id = article.Id;
 
             InitComments();
         }
 
-        private void InitComments()
+        private async void InitComments()
         {
-            ImageSource image = ImageSource.FromResource("testcardimage.png");
+            List<Comment> comments = await Api.GetArticleComments(Id);
+            ListViewFullArticleComments.ItemsSource = _Comments = comments;
+        }
 
-            for (int i = 0; i < 10; i++)
+        private async void ImageButtonSendComment_Clicked(object sender, EventArgs e)
+        {
+            string message = EntryMessage.Text;
+
+            if (string.IsNullOrWhiteSpace(message))
             {
-                _Comments.Add(new FullArticleComment()
-                {
-                    Date = "01.01.1970",
-                    FirstName = "Alex",
-                    LastName = "Maroni",
-                    Message = "Test message",
-                    Image = image,
-                });
+                await DisplayAlert("Ошибка", "Нельзя отправить пустой комментарий!", "Ок");
+                return;
             }
 
-            ListViewFullArticleComments.ItemsSource = _Comments;
+            if (message.Length < 5)
+            {
+                await DisplayAlert("Ошибка", "Слишком короткий комментарий!", "Ок");
+                return;
+            }
+
+            bool result = await Api.InsertArticleComment(Cache.ID, Id, message);
+            if (!result)
+            {
+                await DisplayAlert("Ошибка", "Произошла неизвестная ошибка! Попробуйте чуть позже!", "Ок");
+                return;
+            }
+
+            await DisplayAlert("Успешно", "Вы добавили комментарий к записи!", "Ок");
+            EntryMessage.Text = null;
         }
     }
 }

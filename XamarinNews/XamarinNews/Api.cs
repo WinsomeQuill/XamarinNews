@@ -181,5 +181,35 @@ namespace XamarinNews
             }
             return null;
         }
+
+        public async static Task<bool> InsertArticleComment(int user_id, int article_id, string message)
+        {
+            object json = new
+            {
+                user_id,
+                article_id,
+                message,
+            };
+
+            RestRequest request = new RestRequest("/insert-article-comment", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<string> result = new Response<string>(response.Content);
+            return result.Status;
+        }
+
+        public async static Task<List<Comment>> GetArticleComments(int article_id)
+        {
+            RestRequest request = new RestRequest($"/get-article-comments?article_id={article_id}", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<List<Comment>> result = new Response<List<Comment>>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
+        }
     }
 }

@@ -61,9 +61,16 @@
                                HeightRequest="40"
                                WidthRequest="40"/>
                     </Frame>
-                    <Entry Placeholder="Оставьте свой комментарий!"
+                    <Entry x:Name="EntryMessage"
+                           Placeholder="Оставьте свой комментарий!"
                            HorizontalOptions="CenterAndExpand"
                            HeightRequest="20"/>
+                    <ImageButton x:Name="ImageButtonSendComment"
+                                 Source="sendcomment.png"
+                                 HeightRequest="20"
+                                 WidthRequest="20"
+                                 HorizontalOptions="EndAndExpand"
+                                 Clicked="ImageButtonSendComment_Clicked"/>
                 </StackLayout>
 
                 <!-- Блок с комментариями -->
@@ -85,18 +92,18 @@
                                                     <Image Aspect="Fill"
                                                            VerticalOptions="Start"
                                                            HorizontalOptions="Center"
-                                                           Source="{Binding Image}"
+                                                           Source="{Binding Author.CropAvatar}"
                                                            HeightRequest="40"
                                                            WidthRequest="40"/>
                                                 </Frame>
-                                                <Label Text="{Binding FirstName}"
+                                                <Label Text="{Binding Author.FirstName}"
                                                        Margin="0,20,0,0"/>
-                                                <Label Text="{Binding LastName}"
+                                                <Label Text="{Binding Author.LastName}"
                                                        Margin="0,20,0,0"/>
                                             </StackLayout>
                                             <Label Text="{Binding Message}"/>
                                             <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Date}" FontSize="12"/>
+                                                <Label Text="{Binding PublishDate}" FontSize="12"/>
                                             </StackLayout>
                                         </StackLayout>
                                     </ViewCell.View>
