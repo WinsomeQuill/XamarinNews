@@ -48,6 +48,50 @@
                            Margin="0,10,0,0"/>
                 </StackLayout>
 
+                <!-- Блок с лайком и дизлайком -->
+                <StackLayout Orientation="Horizontal"
+                             Margin="0,10,0,10"
+                             HorizontalOptions="CenterAndExpand">
+                    <StackLayout Orientation="Vertical"
+                                 Margin="0,0,50,0">
+                        <ImageButton x:Name="ImageButtonLike"
+                                     Grid.Row="0"
+                                     Grid.Column="0"
+                                     Source="like.png"
+                                     HeightRequest="20"
+                                     WidthRequest="20"
+                                     HorizontalOptions="FillAndExpand"
+                                     BackgroundColor="Transparent"
+                                     Background="Transparent"
+                                     BorderColor="Transparent"
+                                     Clicked="ImageButtonLike_Clicked"/>
+                        <Label x:Name="LabelLikesCount"
+                               Grid.Row="1"
+                               Grid.Column="0"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical"
+                                 Margin="50,0,0,0">
+                        <ImageButton x:Name="ImageButtonDislike"
+                                     Grid.Row="0"
+                                     Grid.Column="1"
+                                     Source="dislike.png"
+                                     HeightRequest="20"
+                                     WidthRequest="20"
+                                     HorizontalOptions="FillAndExpand"
+                                     BackgroundColor="Transparent"
+                                     Background="Transparent"
+                                     BorderColor="Transparent"
+                                     Clicked="ImageButtonDislike_Clicked"/>
+                        <Label x:Name="LabelDislikesCount"
+                               Grid.Row="1"
+                               Grid.Column="1"/>
+                    </StackLayout>
+                </StackLayout>
+
+                <Label x:Name="LabelLikeOrDislakeComment"
+                       Text="Вы посчитали эту статью N!"
+                       HorizontalOptions="CenterAndExpand"/>
+
                 <!-- Блок с аватаркой читателя и entry полем -->                
                 <StackLayout Orientation="Horizontal"
                              Margin="0,10,0,10">

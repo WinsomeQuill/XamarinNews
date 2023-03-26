@@ -211,5 +211,52 @@ namespace XamarinNews
             }
             return null;
         }
+
+        public async static Task<bool> InsertReactionArticle(int user_id, int article_id, string reaction)
+        {
+            object json = new
+            {
+                user_id,
+                article_id,
+                reaction
+            };
+
+            RestRequest request = new RestRequest("/insert-reaction-for-article", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<string> result = new Response<string>(response.Content);
+            return result.Status;
+        }
+
+        public async static Task<bool> RemoveReactionArticle(int user_id, int article_id, string reaction)
+        {
+            object json = new
+            {
+                user_id,
+                article_id,
+                reaction
+            };
+
+            RestRequest request = new RestRequest("/remove-reaction-for-article", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<string> result = new Response<string>(response.Content);
+            return result.Status;
+        }
+
+        public async static Task<string> GetReactionArticleByUser(int user_id, int article_id)
+        {
+            RestRequest request = new RestRequest($"/get-reaction-for-article-by-user?user_id={user_id}&article_id={article_id}", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<string> result = new Response<string>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace XamarinNews.Windows
     public partial class FullArticle : ContentPage
     {
         public int Id { get; set; }
+        public string Reaction { get; set; }
 
         public FullArticle(Article article)
         {
@@ -27,6 +28,27 @@ namespace XamarinNews.Windows
             LabelAuthorName.Text = $"{article.Author.FirstName} {article.Author.LastName}";
             ImageAuthorAvatar.Source = article.Author.CropAvatar;
             Id = article.Id;
+            LabelLikesCount.Text = $"{article.Likes}";
+            LabelDislikesCount.Text = $"{article.Dislikes}";
+
+            Device.InvokeOnMainThreadAsync(async () =>
+            {
+                Reaction = await Api.GetReactionArticleByUser(Cache.ID, Id);
+
+                if (Reaction == "Нравится")
+                {
+                    ImageButtonLike.Source = ImageSource.FromFile("pressed_like.png");
+                    return;
+                }
+
+                if (Reaction == "Не нравится")
+                {
+                    ImageButtonDislike.Source = ImageSource.FromFile("pressed_dislike.png");
+                    return;
+                }
+
+                LabelLikeOrDislakeComment.IsVisible = false;
+            });
 
             InitComments();
         }
@@ -72,6 +94,58 @@ namespace XamarinNews.Windows
 
             await DisplayAlert("Успешно", "Вы добавили комментарий к записи!", "Ок");
             EntryMessage.Text = null;
+        }
+
+        private async void ImageButtonLike_Clicked(object sender, EventArgs e)
+        {
+            if (Reaction != null)
+            {
+                if (!await Api.RemoveReactionArticle(Cache.ID, Id, Reaction))
+                {
+                    await DisplayAlert("Ошибка", "Произошла неизвестная ошибка! Попробуйте чуть позже!", "Ок");
+                    return;
+                }
+            }
+
+            ImageButtonLike.Source = ImageSource.FromFile("like.png");
+            ImageButtonDislike.Source = ImageSource.FromFile("dislike.png");
+
+            bool result = await Api.InsertReactionArticle(Cache.ID, Id, "Нравится");
+            if (!result)
+            {
+                await DisplayAlert("Ошибка", "Произошла неизвестная ошибка! Попробуйте чуть позже!", "Ок");
+                return;
+            }
+
+            LabelLikeOrDislakeComment.Text = "Вы считает эту статью полезной!";
+            LabelLikeOrDislakeComment.IsVisible = true;
+            ImageButtonLike.Source = ImageSource.FromFile("pressed_like.png");
+        }
+
+        private async void ImageButtonDislike_Clicked(object sender, EventArgs e)
+        {
+            if (Reaction != null)
+            {
+                if (!await Api.RemoveReactionArticle(Cache.ID, Id, Reaction))
+                {
+                    await DisplayAlert("Ошибка", "Произошла неизвестная ошибка! Попробуйте чуть позже!", "Ок");
+                    return;
+                }
+            }
+
+            ImageButtonLike.Source = ImageSource.FromFile("like.png");
+            ImageButtonDislike.Source = ImageSource.FromFile("dislike.png");
+
+            bool result = await Api.InsertReactionArticle(Cache.ID, Id, "Не нравится");
+            if (!result)
+            {
+                await DisplayAlert("Ошибка", "Произошла неизвестная ошибка! Попробуйте чуть позже!", "Ок");
+                return;
+            }
+
+            LabelLikeOrDislakeComment.Text = "Вы считает эту статью бесполезной!";
+            LabelLikeOrDislakeComment.IsVisible = true;
+            ImageButtonDislike.Source = ImageSource.FromFile("pressed_dislike.png");
         }
     }
 }
