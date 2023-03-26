@@ -35,25 +35,31 @@ namespace XamarinNews.Windows
             MainPageSearchImageAvatarUser.Source = Cache.CropAvatar;
             ImageAvatarUser.Source = Cache.FullAvatar;
 
-            await Task.Run(() =>
+            new Thread(new ThreadStart(() =>
             {
-                Device.BeginInvokeOnMainThread(async () =>
+                Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    List<Article> articles = await Api.GetArticles();
-                    ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = articles;
-
+                    while(true)
+                    {
+                        List<Article> articles = await Api.GetArticles();
+                        ListViewNews.ItemsSource = articles;
+                        await Task.Delay(60000);
+                    }
                 });
-            });
+            })).Start();
 
-            await Task.Run(() =>
+            new Thread(new ThreadStart(() =>
             {
-                Device.BeginInvokeOnMainThread(async () =>
+                Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    List<Article> articles = await Api.GetArticlesFromUser(Cache.ID);
-                    ListViewProfileNews.ItemsSource = articles;
+                    while (true)
+                    {
+                        List<Article> articles = await Api.GetArticlesFromUser(Cache.ID);
+                        ListViewProfileNews.ItemsSource = articles;
+                        await Task.Delay(60000);
+                    }
                 });
-            });
-            
+            })).Start();
 
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfileNews.ItemSelected += ListViewNews_ItemSelected;

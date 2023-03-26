@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -31,10 +32,20 @@ namespace XamarinNews.Windows
             InitComments();
         }
 
-        private async void InitComments()
+        private void InitComments()
         {
-            List<Comment> comments = await Api.GetArticleComments(Id);
-            ListViewFullArticleComments.ItemsSource = _Comments = comments;
+            new Thread(new ThreadStart(() =>
+            {
+                Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    while (true)
+                    {
+                        List<Comment> comments = await Api.GetArticleComments(Id);
+                        ListViewFullArticleComments.ItemsSource = _Comments = comments;
+                        await Task.Delay(60000);
+                    }
+                });
+            })).Start();
         }
 
         private async void ImageButtonSendComment_Clicked(object sender, EventArgs e)
