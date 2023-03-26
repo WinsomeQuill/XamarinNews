@@ -152,7 +152,7 @@
                            Margin="0,10,0,0"
                            FontSize="16"
                            HorizontalOptions="CenterAndExpand"/>
-                    <Label Text="TEXT TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT  TEXT"/>
+                    <Label x:Name="LabelProfileAbout"/>
                     <Label Text="Мои последние новости"
                            Margin="0,10,0,0"
                            FontSize="18"

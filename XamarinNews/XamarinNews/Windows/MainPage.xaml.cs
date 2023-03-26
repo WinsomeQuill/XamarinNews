@@ -25,7 +25,7 @@ namespace XamarinNews.Windows
             Init();
         }
 
-        private async void Init()
+        private void Init()
         {
             // Это костыль, чтобы пользователь не смог вернуться назад по кнопке
             // Просто у xamarin тупая система навигации
@@ -34,6 +34,7 @@ namespace XamarinNews.Windows
 
             MainPageSearchImageAvatarUser.Source = Cache.CropAvatar;
             ImageAvatarUser.Source = Cache.FullAvatar;
+            LabelProfileAbout.Text = Cache.About;
 
             new Thread(new ThreadStart(() =>
             {

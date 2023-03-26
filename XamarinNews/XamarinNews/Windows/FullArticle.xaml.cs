@@ -15,7 +15,6 @@ namespace XamarinNews.Windows
     public partial class FullArticle : ContentPage
     {
         public int Id { get; set; }
-        private List<Comment> _Comments { get; set; } = new List<Comment>();
 
         public FullArticle(Article article)
         {
@@ -23,7 +22,7 @@ namespace XamarinNews.Windows
 
             LabelTitle.Text = article.Title;
             ImageHeader.Source = article.Image;
-            LabelDescription.Text = article.Description;
+            LabelDescription.Text = article.FullDescription;
             ImageReaderAvatar.Source = Cache.CropAvatar;
             LabelAuthorName.Text = $"{article.Author.FirstName} {article.Author.LastName}";
             ImageAuthorAvatar.Source = article.Author.CropAvatar;
@@ -41,7 +40,7 @@ namespace XamarinNews.Windows
                     while (true)
                     {
                         List<Comment> comments = await Api.GetArticleComments(Id);
-                        ListViewFullArticleComments.ItemsSource = _Comments = comments;
+                        ListViewFullArticleComments.ItemsSource = comments;
                         await Task.Delay(60000);
                     }
                 });
