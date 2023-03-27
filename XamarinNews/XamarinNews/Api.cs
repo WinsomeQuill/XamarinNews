@@ -77,8 +77,8 @@ namespace XamarinNews
             RestRequest request = new RestRequest($"/is-user-followed?author_user_id={author_id}&follower_user_id={follow_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            Response<string> result = new Response<string>(response.Content);
-            return result.Status;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Message;
         }
 
         public async static Task<int> GetUserCountFollowers(int user_id)
