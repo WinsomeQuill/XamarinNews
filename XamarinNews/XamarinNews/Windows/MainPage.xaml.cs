@@ -75,6 +75,12 @@ namespace XamarinNews.Windows
                 });
             })).Start();
 
+            Device.InvokeOnMainThreadAsync(async () =>
+            {
+                int result = await Api.GetUserCountFollowers(Cache.ID);
+                LabelMyFollowersCount.Text = $"{result}";
+            });
+
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfileNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfiles.ItemSelected += ListViewProfiles_ItemSelected;
