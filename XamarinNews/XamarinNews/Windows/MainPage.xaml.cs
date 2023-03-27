@@ -42,7 +42,7 @@ namespace XamarinNews.Windows
                 {
                     while(true)
                     {
-                        List<Article> articles = await Api.GetArticles();
+                        List<Article> articles = await Api.GetArticles(Cache.ID);
                         ListViewNews.ItemsSource = articles;
                         await Task.Delay(60000);
                     }

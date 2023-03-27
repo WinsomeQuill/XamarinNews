@@ -156,9 +156,9 @@ namespace XamarinNews
             return result.Status;
         }
 
-        public async static Task<List<Article>> GetArticles()
+        public async static Task<List<Article>> GetArticles(int user_id)
         {
-            RestRequest request = new RestRequest("/get-articles", Method.Get);
+            RestRequest request = new RestRequest($"/get-articles?user_id={user_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
             Response<List<Article>> result = new Response<List<Article>>(response.Content);
