@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Elements\MainPage\ListViewCellPreviewProfile .xaml.cs">
+      <DependentUpon>ListViewCellPreviewProfile .xaml</DependentUpon>
+    </Compile>
     <Compile Update="Windows\SignUp.xaml.cs">
       <DependentUpon>SignUp.xaml</DependentUpon>
     </Compile>

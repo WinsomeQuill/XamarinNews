@@ -60,55 +60,7 @@
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.View>
-                                <StackLayout>
-                                    <Grid HeightRequest="110">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="70"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid Grid.Column="1"
-                                              HorizontalOptions="Start">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="18"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            
-                                            <StackLayout Grid.Row="0"
-                                                         Orientation="Horizontal"
-                                                         Margin="0"
-                                                         Padding="0">
-                                                <Label FontSize="16" Text="Alex"/>
-                                                <Label FontSize="16" Text="Maroni"/>
-                                            </StackLayout>
-                                            <StackLayout Grid.Row="1"
-                                                         VerticalOptions="StartAndExpand">
-                                                <Label FontSize="12"
-                                                       Text="LiveAction - актуальные данные! Каждый день ведем Live режим с 6:00 до 18:00 по МСК!"/>
-                                            </StackLayout>
-                                            <StackLayout Grid.Row="2"
-                                                         VerticalOptions="End"
-                                                         Orientation="Horizontal"
-                                                         Margin="0,0,0,10">
-                                                <Label Text="Followers:"/>
-                                                <Label Text="10000"/>
-                                            </StackLayout>
-                                        </Grid>
-
-                                        <StackLayout Orientation="Horizontal"
-                                                     Grid.Column="0">
-                                            <Frame CornerRadius="100"
-                                                HasShadow="True"
-                                                Padding="0"
-                                                VerticalOptions="Center">
-                                                <Image Aspect="Fill"
-                                                    VerticalOptions="Start"
-                                                    HorizontalOptions="Center"
-                                                    Source="testcardimage.png"
-                                                    HeightRequest="70"
-                                                    WidthRequest="70"/>
-                                            </Frame>
-                                        </StackLayout>
-                                    </Grid>
-                                </StackLayout>
+                                <elements:ListViewCellPreviewProfile/>
                             </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>

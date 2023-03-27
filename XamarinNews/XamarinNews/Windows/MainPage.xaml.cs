@@ -62,6 +62,19 @@ namespace XamarinNews.Windows
                 });
             })).Start();
 
+            new Thread(new ThreadStart(() =>
+            {
+                Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    while (true)
+                    {
+                        List<PopularUser> users = await Api.GetPopularUsers(Cache.ID);
+                        ListViewProfiles.ItemsSource = users;
+                        await Task.Delay(120000);
+                    }
+                });
+            })).Start();
+
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfileNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfiles.ItemSelected += ListViewProfiles_ItemSelected;
@@ -69,8 +82,8 @@ namespace XamarinNews.Windows
 
         private async void ListViewProfiles_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Article item = (Article)e.SelectedItem;
-            await Navigation.PushAsync(new AnotherProfile(item.Author.Id, Cache.ID));
+            PopularUser item = (PopularUser)e.SelectedItem;
+            await Navigation.PushAsync(new AnotherProfile(item.Id, Cache.ID));
         }
 
         private void SearchNews_TextChanged(object sender, TextChangedEventArgs e)

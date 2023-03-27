@@ -258,5 +258,18 @@ namespace XamarinNews
             }
             return null;
         }
+
+        public async static Task<List<PopularUser>> GetPopularUsers(int user_id)
+        {
+            RestRequest request = new RestRequest($"/get-popular-users?user_id={user_id}", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<List<PopularUser>> result = new Response<List<PopularUser>>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
+        }
     }
 }

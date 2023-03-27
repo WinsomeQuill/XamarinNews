@@ -8,7 +8,6 @@ namespace XamarinNews.Windows
 {
     public partial class AnotherProfile : ContentPage
     {
-        private List<Article> _List { get; set; } = new List<Article>();
         private int _authorID { get; set; }
         private bool _isSubsribe { get; set; } = false;
 
