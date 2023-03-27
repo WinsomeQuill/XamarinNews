@@ -35,6 +35,7 @@ namespace XamarinNews.Windows
             MainPageSearchImageAvatarUser.Source = Cache.CropAvatar;
             ImageAvatarUser.Source = Cache.FullAvatar;
             LabelProfileAbout.Text = Cache.About;
+            LabelMyName.Text = $"{Cache.FirstName} {Cache.LastName}";
 
             new Thread(new ThreadStart(() =>
             {
