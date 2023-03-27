@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:elements="clr-namespace:XamarinNews.Elements.MainPage"
              x:Class="XamarinNews.Windows.AnotherProfile">
     <ContentPage.Content>
         <ScrollView HorizontalScrollBarVisibility="Never">
@@ -65,53 +66,7 @@
                         <DataTemplate>
                             <ViewCell>
                                 <ViewCell.View>
-                                    <Frame IsClippedToBounds="True"
-                                        CornerRadius="5"
-                                        Padding="0"
-                                        HasShadow="False"
-                                        OutlineColor="GhostWhite"
-                                        Margin="10,10,10,0">
-                                        <StackLayout Orientation="Vertical">
-                                            <Image Aspect="Fill"
-                                               VerticalOptions="Start"
-                                               HorizontalOptions="Center"
-                                               Source="testcardimage.jpg"
-                                               HeightRequest="150"/>
-                                            <StackLayout Orientation="Horizontal"
-                                                         Margin="10,0,10,0">
-                                                <Label Text="{Binding Author}"
-                                                       HorizontalOptions="StartAndExpand"/>
-                                                <Label Text="{Binding Date}"
-                                                       HorizontalOptions="EndAndExpand"/>
-                                            </StackLayout>
-                                            <Label Text="{Binding Description}"
-                                                   Margin="10,0,0,0"/>
-                                            <StackLayout Orientation="Horizontal"
-                                                     Margin="10,0,0,10"
-                                                     VerticalOptions="EndAndExpand">
-                                                <Image Source="like.png"
-                                                   HeightRequest="20"
-                                                   WidthRequest="20"
-                                                   HorizontalOptions="Start"/>
-                                                <Label Text="{Binding Likes}"
-                                                        HorizontalOptions="Start"/>
-                                                <Image Source="dislike.png"
-                                                   HeightRequest="20"
-                                                   WidthRequest="20"
-                                                   HorizontalOptions="Start"/>
-                                                <Label Text="{Binding Dislikes}"
-                                                       HorizontalOptions="Start"/>
-
-                                                <Image Source="comments.png"
-                                                   HeightRequest="20"
-                                                   WidthRequest="20"
-                                                   HorizontalOptions="EndAndExpand"/>
-                                                <Label Text="{Binding Dislikes}"
-                                                    HorizontalOptions="End"
-                                                    Margin="10,0,10,0"/>
-                                            </StackLayout>
-                                        </StackLayout>
-                                    </Frame>
+                                    <elements:ListViewCellPreviewArticle/>
                                 </ViewCell.View>
                             </ViewCell>
                         </DataTemplate>

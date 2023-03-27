@@ -32,7 +32,7 @@
                        FontAttributes="Bold"
                        FontSize="16"
                        HorizontalOptions="CenterAndExpand"/>
-                <Label Text="{Binding Description}"
+                <Label Text="{Binding CropDescription}"
                        Margin="10,0,0,0"/>
                 <StackLayout Orientation="Horizontal"
                              Margin="10,0,0,10"

@@ -77,8 +77,8 @@ namespace XamarinNews
             RestRequest request = new RestRequest($"/is-user-followed?author_user_id={author_id}&follower_user_id={follow_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
-            Response<string> result = new Response<string>(response.Content);
-            return result.Status;
+            Response<bool> result = new Response<bool>(response.Content);
+            return result.Message;
         }
 
         public async static Task<int> GetUserCountFollowers(int user_id)
@@ -156,9 +156,9 @@ namespace XamarinNews
             return result.Status;
         }
 
-        public async static Task<List<Article>> GetArticles()
+        public async static Task<List<Article>> GetArticles(int user_id)
         {
-            RestRequest request = new RestRequest("/get-articles", Method.Get);
+            RestRequest request = new RestRequest($"/get-articles?user_id={user_id}", Method.Get);
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
             Response<List<Article>> result = new Response<List<Article>>(response.Content);
@@ -175,6 +175,96 @@ namespace XamarinNews
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
             Response<List<Article>> result = new Response<List<Article>>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
+        }
+
+        public async static Task<bool> InsertArticleComment(int user_id, int article_id, string message)
+        {
+            object json = new
+            {
+                user_id,
+                article_id,
+                message,
+            };
+
+            RestRequest request = new RestRequest("/insert-article-comment", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<string> result = new Response<string>(response.Content);
+            return result.Status;
+        }
+
+        public async static Task<List<Comment>> GetArticleComments(int article_id)
+        {
+            RestRequest request = new RestRequest($"/get-article-comments?article_id={article_id}", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<List<Comment>> result = new Response<List<Comment>>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
+        }
+
+        public async static Task<bool> InsertReactionArticle(int user_id, int article_id, string reaction)
+        {
+            object json = new
+            {
+                user_id,
+                article_id,
+                reaction
+            };
+
+            RestRequest request = new RestRequest("/insert-reaction-for-article", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<string> result = new Response<string>(response.Content);
+            return result.Status;
+        }
+
+        public async static Task<bool> RemoveReactionArticle(int user_id, int article_id, string reaction)
+        {
+            object json = new
+            {
+                user_id,
+                article_id,
+                reaction
+            };
+
+            RestRequest request = new RestRequest("/remove-reaction-for-article", Method.Post);
+            request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<string> result = new Response<string>(response.Content);
+            return result.Status;
+        }
+
+        public async static Task<string> GetReactionArticleByUser(int user_id, int article_id)
+        {
+            RestRequest request = new RestRequest($"/get-reaction-for-article-by-user?user_id={user_id}&article_id={article_id}", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<string> result = new Response<string>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
+        }
+
+        public async static Task<List<PopularUser>> GetPopularUsers(int user_id)
+        {
+            RestRequest request = new RestRequest($"/get-popular-users?user_id={user_id}", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<List<PopularUser>> result = new Response<List<PopularUser>>(response.Content);
             if (result.Status)
             {
                 return result.Message;

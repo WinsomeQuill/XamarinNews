@@ -21,8 +21,11 @@ namespace XamarinNews.PostgresSQL.Models
         [JsonProperty("title")]
         public string Title { get; set; }
 
-        [JsonProperty("description")]
-        public string Description { get; set; }
+        [JsonProperty("crop_description")]
+        public string CropDescription { get; set; }
+        
+        [JsonProperty("full_description")]
+        public string FullDescription { get; set; }
 
         [JsonProperty("publish_date")]
         public DateTime PublishDate { get; set; }

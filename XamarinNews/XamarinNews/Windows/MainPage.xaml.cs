@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using XamarinNews.PostgresSQL.Models;
-using static Android.Content.ClipData;
 
 namespace XamarinNews.Windows
 {
@@ -26,7 +25,7 @@ namespace XamarinNews.Windows
             Init();
         }
 
-        private async void Init()
+        private void Init()
         {
             // Это костыль, чтобы пользователь не смог вернуться назад по кнопке
             // Просто у xamarin тупая система навигации
@@ -35,26 +34,52 @@ namespace XamarinNews.Windows
 
             MainPageSearchImageAvatarUser.Source = Cache.CropAvatar;
             ImageAvatarUser.Source = Cache.FullAvatar;
+            LabelProfileAbout.Text = Cache.About;
 
-            await Task.Run(() =>
+            new Thread(new ThreadStart(() =>
             {
-                Device.BeginInvokeOnMainThread(async () =>
+                Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    List<Article> articles = await Api.GetArticles();
-                    ListViewNews.ItemsSource = ListViewProfileNews.ItemsSource = articles;
-
+                    while(true)
+                    {
+                        List<Article> articles = await Api.GetArticles(Cache.ID);
+                        ListViewNews.ItemsSource = articles;
+                        await Task.Delay(60000);
+                    }
                 });
-            });
+            })).Start();
 
-            await Task.Run(() =>
+            new Thread(new ThreadStart(() =>
             {
-                Device.BeginInvokeOnMainThread(async () =>
+                Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    List<Article> articles = await Api.GetArticlesFromUser(Cache.ID);
-                    ListViewProfileNews.ItemsSource = articles;
+                    while (true)
+                    {
+                        List<Article> articles = await Api.GetArticlesFromUser(Cache.ID);
+                        ListViewProfileNews.ItemsSource = articles;
+                        await Task.Delay(60000);
+                    }
                 });
+            })).Start();
+
+            new Thread(new ThreadStart(() =>
+            {
+                Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    while (true)
+                    {
+                        List<PopularUser> users = await Api.GetPopularUsers(Cache.ID);
+                        ListViewProfiles.ItemsSource = users;
+                        await Task.Delay(120000);
+                    }
+                });
+            })).Start();
+
+            Device.InvokeOnMainThreadAsync(async () =>
+            {
+                int result = await Api.GetUserCountFollowers(Cache.ID);
+                LabelMyFollowersCount.Text = $"{result}";
             });
-            
 
             ListViewNews.ItemSelected += ListViewNews_ItemSelected;
             ListViewProfileNews.ItemSelected += ListViewNews_ItemSelected;
@@ -63,8 +88,8 @@ namespace XamarinNews.Windows
 
         private async void ListViewProfiles_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Article item = (Article)e.SelectedItem;
-            await Navigation.PushAsync(new AnotherProfile(item.Author.Id, Cache.ID));
+            PopularUser item = (PopularUser)e.SelectedItem;
+            await Navigation.PushAsync(new AnotherProfile(item.Id, Cache.ID));
         }
 
         private void SearchNews_TextChanged(object sender, TextChangedEventArgs e)

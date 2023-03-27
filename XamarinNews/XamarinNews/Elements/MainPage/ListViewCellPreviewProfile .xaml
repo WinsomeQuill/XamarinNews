@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinNews.Elements.MainPage.ListViewCellPreviewProfile">
+  <ContentView.Content>
+        <StackLayout>
+            <Grid HeightRequest="110">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1" HorizontalOptions="Start">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="18"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackLayout Grid.Row="0"
+                                 Orientation="Horizontal"
+                                 Margin="0"
+                                 Padding="0">
+                        <Label FontSize="16" Text="{Binding FirstName}"/>
+                        <Label FontSize="16" Text="{Binding LastName}"/>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1" VerticalOptions="StartAndExpand">
+                        <Label FontSize="12" Text="{Binding About}"/>
+                    </StackLayout>
+                    <StackLayout Grid.Row="2"
+                                 VerticalOptions="End"
+                                 Orientation="Horizontal"
+                                 Margin="0,0,0,10">
+                        <Label Text="Followers:"/>
+                        <Label Text="{Binding Followers}"/>
+                    </StackLayout>
+                </Grid>
+
+                <StackLayout Orientation="Horizontal" Grid.Column="0">
+                    <Frame CornerRadius="100"
+                           HasShadow="True"
+                           Padding="0"
+                           VerticalOptions="Center">
+                        <Image Aspect="Fill"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center"
+                               Source="{Binding CropAvatar}"
+                               HeightRequest="70"
+                               WidthRequest="70"/>
+                    </Frame>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
