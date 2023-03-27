@@ -92,11 +92,6 @@ namespace XamarinNews.Windows
             await Navigation.PushAsync(new AnotherProfile(item.Id, Cache.ID));
         }
 
-        private void SearchNews_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private async void ListViewNews_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             Article item = (Article)e.SelectedItem;
@@ -163,6 +158,18 @@ namespace XamarinNews.Windows
         private async void ButtonCreateArticle_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new InsertArticle());
+        }
+
+        private async void EntrySearchUsers_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string words = EntrySearchUsers.Text;
+            if (words.Length <= 0)
+            {
+                ListViewProfiles.ItemsSource = await Api.GetPopularUsers(Cache.ID);
+                return;
+            }
+
+            ListViewProfiles.ItemsSource = await Api.FindUserByKeyWords(Cache.ID, words);
         }
     }
 }

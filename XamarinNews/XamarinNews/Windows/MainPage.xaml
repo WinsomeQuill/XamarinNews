@@ -29,11 +29,6 @@
                                 HeightRequest="200"
                                 Source="testcardimage.png"/>
                     </Frame>
-                    <Entry x:Name="SearchNews"
-                           Placeholder="Поиск"
-                           TextChanged="SearchNews_TextChanged"
-                           HorizontalOptions="FillAndExpand"
-                           Margin="10,0,10,0"/>
                 </StackLayout>
             </Frame>
             <ListView x:Name="ListViewNews"
@@ -53,6 +48,11 @@
     </ContentPage>
     <ContentPage Title="Источники" IconImageSource="sources_news_page.png">
         <StackLayout Margin="10,0,10,0">
+            <Entry x:Name="EntrySearchUsers"
+                  Placeholder="Поиск"
+                  TextChanged="EntrySearchUsers_TextChanged"
+                  HorizontalOptions="FillAndExpand"
+                  Margin="10,0,10,0"/>
             <ListView x:Name="ListViewProfiles"
                       VerticalOptions="FillAndExpand"
                       HasUnevenRows="True">

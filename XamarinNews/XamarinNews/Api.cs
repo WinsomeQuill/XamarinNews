@@ -271,5 +271,18 @@ namespace XamarinNews
             }
             return null;
         }
+
+        public async static Task<List<PopularUser>> FindUserByKeyWords(int user_id, string words)
+        {
+            RestRequest request = new RestRequest($"/find-user-by-key-words?user_id={user_id}&words={words}", Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            RestResponse response = await _client.ExecuteAsync(request);
+            Response<List<PopularUser>> result = new Response<List<PopularUser>>(response.Content);
+            if (result.Status)
+            {
+                return result.Message;
+            }
+            return null;
+        }
     }
 }
