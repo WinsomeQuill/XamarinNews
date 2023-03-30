@@ -37,7 +37,7 @@ namespace XamarinNews
             Response<User> result = new Response<User>(response.Content);
             if (result.Status)
             {
-                return result.Message;
+                return result.Result;
             }
             return null;
         }
@@ -67,7 +67,7 @@ namespace XamarinNews
             Response<User> result = new Response<User>(response.Content);
             if (result.Status)
             {
-                return result.Message;
+                return result.Result;
             }
             return null;
         }
@@ -78,7 +78,7 @@ namespace XamarinNews
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
             Response<bool> result = new Response<bool>(response.Content);
-            return result.Message;
+            return result.Result;
         }
 
         public async static Task<int> GetUserCountFollowers(int user_id)
@@ -87,7 +87,7 @@ namespace XamarinNews
             request.AddHeader("Content-Type", "application/json");
             RestResponse response = await _client.ExecuteAsync(request);
             Response<int> result = new Response<int>(response.Content);
-            return result.Message;
+            return result.Result;
         }
 
         public async static Task<bool> FollowingUser(int author_id, int follower_id)
@@ -164,7 +164,7 @@ namespace XamarinNews
             Response<List<Article>> result = new Response<List<Article>>(response.Content);
             if (result.Status)
             {
-                return result.Message;
+                return result.Result;
             }
             return null;
         }
@@ -177,7 +177,7 @@ namespace XamarinNews
             Response<List<Article>> result = new Response<List<Article>>(response.Content);
             if (result.Status)
             {
-                return result.Message;
+                return result.Result;
             }
             return null;
         }
@@ -207,7 +207,7 @@ namespace XamarinNews
             Response<List<Comment>> result = new Response<List<Comment>>(response.Content);
             if (result.Status)
             {
-                return result.Message;
+                return result.Result;
             }
             return null;
         }
@@ -254,7 +254,7 @@ namespace XamarinNews
             Response<string> result = new Response<string>(response.Content);
             if (result.Status)
             {
-                return result.Message;
+                return result.Result;
             }
             return null;
         }
@@ -267,7 +267,7 @@ namespace XamarinNews
             Response<List<PopularUser>> result = new Response<List<PopularUser>>(response.Content);
             if (result.Status)
             {
-                return result.Message;
+                return result.Result;
             }
             return null;
         }
@@ -280,7 +280,7 @@ namespace XamarinNews
             Response<List<PopularUser>> result = new Response<List<PopularUser>>(response.Content);
             if (result.Status)
             {
-                return result.Message;
+                return result.Result;
             }
             return null;
         }

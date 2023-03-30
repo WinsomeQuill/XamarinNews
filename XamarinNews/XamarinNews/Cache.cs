@@ -14,6 +14,6 @@ namespace XamarinNews
         public static string Login { get; set; }
         public static ImageSource CropAvatar { get; set; }
         public static ImageSource FullAvatar { get; set; }
-        public static string Version { get; } = "0.1.9";
+        public static string Version { get; } = "0.2.0";
     }
 }
